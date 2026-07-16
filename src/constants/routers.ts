@@ -1,0 +1,19 @@
+export const routers = {
+  LANDING: '/',
+  SETTING: '/setting',
+  ACCOUNT_SETTING: '/setting/account',
+  SECURITY_SETTING: '/setting/security',
+  PREFERENCE_SETTING: '/setting/preference',
+  SESSION_SETTING: '/setting/session',
+  IGNORE_USER_SETTING: '/setting/ignore',
+  VERIFY_SETTING: '/setting/verify',
+  OFFER_SETTING: '/setting/offer',
+  PROMOTION: '/promotion',
+  AFFILIATE: 'affiliate',
+  VIP: '/vip',
+  BLOG: '/blog',
+  FORUM: '/forum',
+  SPONSORSHIP: 'sponsorship',
+  SUPPORT: '/support',
+  NOT_FOUND: '*'
+}
