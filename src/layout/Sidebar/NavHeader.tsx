@@ -1,7 +1,7 @@
-import { IconButton, Stack, styled, useColorScheme, useTheme } from '@mui/material'
+import { IconButton, Stack, styled, useColorScheme } from '@mui/material'
 import { Link } from 'react-router-dom'
 
-import { AppIcon, Logo, TabletLogo } from '@/components/Core'
+import { AppIcon, TabletLogo } from '@/components/Core'
 import { useDeviceType } from '@/hooks'
 import { SidebarProps } from '@/types'
 

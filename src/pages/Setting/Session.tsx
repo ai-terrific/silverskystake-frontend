@@ -11,16 +11,19 @@ import {
   styled,
   useTheme
 } from '@mui/material'
-import { useState } from 'react'
+import { formatDistance } from 'date-fns'
+import { useCallback, useEffect, useState } from 'react'
+import { toast } from 'react-toastify'
 
 import { StyledListItem } from '@/components/common.style'
-import { SESSION_DATA } from '@/constants'
 import { useDeviceType } from '@/hooks'
+import { userService } from '@/services'
 import { color } from '@/theme'
-import { SessionType } from '@/types'
+import { Session } from '@/types'
+import { handleError } from '@/util'
 
 const StatusTextButton = styled(Typography, { shouldForwardProp: prop => prop !== 'status' })<{ status: boolean }>(
-  ({ theme, status }) => ({
+  ({ status }) => ({
     '&:hover': {
       cursor: status ? 'text' : 'pointer',
       textDecoration: status ? 'none' : 'underline'
@@ -31,20 +34,38 @@ const StatusTextButton = styled(Typography, { shouldForwardProp: prop => prop !=
 const SessionSetting = () => {
   const theme = useTheme()
   const { isMobile } = useDeviceType()
-  const [sessions, setSessions] = useState<SessionType[]>(SESSION_DATA)
+  const [sessions, setSessions] = useState<Session[]>([])
 
-  const handleRemoveSession = (index: number, status: boolean) => {
-    if (status) {
-      sessions.splice(index, 1)
-      setSessions([...sessions])
+  const getSessions = useCallback(async () => {
+    try {
+      const response = await userService.getSessionData()
+      setSessions(response)
+    } catch (err) {
+      handleError(err)
     }
-  }
+  }, [])
+
+  const handleRemoveSession = useCallback(async (_id: string, status: boolean) => {
+    try {
+      if (!status) {
+        const response = await userService.removeSession(_id)
+        getSessions()
+        toast.success(response.message, { hideProgressBar: true })
+      }
+    } catch (err) {
+      handleError(err)
+    }
+  }, [])
+
+  useEffect(() => {
+    getSessions()
+  }, [])
 
   return (
     <>
       {isMobile ? (
         <List>
-          {sessions.map((item, index) => (
+          {sessions.map((item,) => (
             <StyledListItem key={item.browser}>
               <Stack spacing={1} width='100%'>
                 <Stack>
@@ -59,7 +80,7 @@ const SessionSetting = () => {
                   </Typography>
                   <Stack direction='row' spacing={3}>
                     <Typography variant='body2' color='secondary'>
-                      {item.lastUsed}
+                      {formatDistance(new Date(item.updatedAt), Date.now(), { addSuffix: true })}
                     </Typography>
                     <Typography
                       component='li'
@@ -68,7 +89,7 @@ const SessionSetting = () => {
                       sx={{
                         listStyleType: 'disc  '
                       }}
-                      onClick={() => handleRemoveSession(index, item.status)}
+                      onClick={() => handleRemoveSession(item._id, item.status)}
                     >
                       {item.status ? 'Current' : 'Remove Session'}
                     </Typography>
@@ -91,14 +112,16 @@ const SessionSetting = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {sessions.map((item, index) => (
+              {sessions.map((item,) => (
                 <TableRow key={item.browser}>
                   <TableCell>{item.browser}</TableCell>
                   <TableCell sx={{ color: theme.palette.secondary.main }}>{item.near}</TableCell>
                   <TableCell sx={{ color: theme.palette.secondary.main }}>{item.ip}</TableCell>
-                  <TableCell sx={{ color: theme.palette.secondary.main }}>{item.lastUsed}</TableCell>
+                  <TableCell sx={{ color: theme.palette.secondary.main }}>
+                    {formatDistance(new Date(item.updatedAt), Date.now(), { addSuffix: true })}
+                  </TableCell>
                   <TableCell align='right' sx={{ color: !item.status ? color.red : '#0E1525' }}>
-                    <StatusTextButton status={item.status} onClick={() => handleRemoveSession(index, item.status)}>
+                    <StatusTextButton status={item.status} onClick={() => handleRemoveSession(item._id, item.status)}>
                       {item.status ? 'Current' : 'Remove Session'}
                     </StatusTextButton>
                   </TableCell>

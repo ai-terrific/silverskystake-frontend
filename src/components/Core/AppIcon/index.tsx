@@ -29,6 +29,7 @@ import Menu from '@/assets/svg/menu.svg'
 import Message from '@/assets/svg/message.svg'
 import Mode from '@/assets/svg/mode.svg'
 import Note from '@/assets/svg/note.svg'
+import Person from '@/assets/svg/person.svg'
 import Promotion from '@/assets/svg/promotion.svg'
 import Search from '@/assets/svg/search.svg'
 import Setting from '@/assets/svg/setting.svg'
@@ -82,7 +83,8 @@ export const ICON_MAP = {
   close: Close,
   'log-out': Logout,
   'side-menu': SideMenu,
-  'dark-logo': DarkLogo
+  'dark-logo': DarkLogo,
+  person: Person
 }
 
 export type IconName = keyof typeof ICON_MAP

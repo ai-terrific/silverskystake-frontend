@@ -1,12 +1,22 @@
+import { User } from './user'
+
 export interface SessionType {
   browser: string
   near: string
   ip: string
-  lastUsed: string
   status: boolean
 }
 
+export interface Session extends SessionType {
+  _id: string
+  updatedAt: Date
+  createdAt: Date
+}
+
 export interface IgnoredUserType {
-  username: string
-  lastUsed: string
+  user: User
+}
+
+export interface IgnoredUser extends IgnoredUserType {
+  createdAt: Date
 }

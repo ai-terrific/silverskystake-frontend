@@ -2,7 +2,6 @@ import { Typography } from '@mui/material'
 
 import SecurityContent from '@/components/Setting/Security'
 import { Setting } from '@/components/Setting/setting.style'
-import { useDeviceType } from '@/hooks'
 
 const SecuritySetting = () => {
   return (

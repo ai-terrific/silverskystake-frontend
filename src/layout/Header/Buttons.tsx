@@ -1,13 +1,61 @@
-import { Avatar, Box, Drawer, Stack, useColorScheme } from '@mui/material'
-import { MouseEvent, useState } from 'react'
+import {
+  Avatar,
+  Box,
+  Button,
+  Dialog,
+  DialogContent,
+  Drawer,
+  IconButton,
+  Stack,
+  Tab,
+  Tabs,
+  styled,
+  useColorScheme
+} from '@mui/material'
+import { Dispatch, MouseEvent, SetStateAction, SyntheticEvent, useState } from 'react'
 
-import { AppIcon, IconName } from '@/components/Core'
+import { AppIcon } from '@/components/Core'
 import { StyledIconButton } from '@/components/common.style'
-import { ICONS } from '@/constants'
 import { useDeviceType } from '@/hooks'
+import { useSelector } from '@/store'
+import { color } from '@/theme'
 
+import Login from './Login'
 import MobileDropDown from './MobileDropDown'
 import ProfileDropDown from './Profile'
+import Register from './Register'
+
+const LoginButton = styled(Button)(({ }) => ({
+  backgroundColor: '#F09C01',
+  color: color.white
+}))
+
+const AuthDialog = ({ open, setOpen }: { open: boolean; setOpen: Dispatch<SetStateAction<boolean>> }) => {
+  const [value, setValue] = useState('login')
+
+  const handleChange = (event: SyntheticEvent, newValue: string) => {
+    setValue(newValue)
+  }
+  
+return (
+    <Dialog open={open} onClose={() => setOpen(false)} maxWidth='sm' fullWidth>
+      <DialogContent>
+        <Stack spacing={3}>
+          <Stack direction='row' justifyContent='space-between'>
+            <Tabs value={value} onChange={handleChange}>
+              <Tab label='Login' value='login' />
+              <Tab label='Register' value='register' />
+            </Tabs>
+            <IconButton>
+              <AppIcon name='close' />
+            </IconButton>
+          </Stack>
+          {value === 'login' ? <Login setOpen={setOpen} /> : <Register />}
+        </Stack>
+      </DialogContent>
+    </Dialog>
+  )
+}
 
 const HeaderButtons = () => {
   const { mode, setMode } = useColorScheme()
@@ -17,11 +65,13 @@ const HeaderButtons = () => {
     else setMode('dark')
   }
 
+  const { isLoggedIn } = useSelector(store => store.auth)
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null)
+  const [drawerOpen, setDrawerOpen] = useState<boolean>(false)
   const [open, setOpen] = useState<boolean>(false)
 
   const handleClose = () => {
-    setOpen(false)
+    setDrawerOpen(false)
   }
 
   const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
@@ -32,10 +82,10 @@ const HeaderButtons = () => {
     <>
       {isSM ? (
         <>
-          <StyledIconButton onClick={() => setOpen(true)}>
+          <StyledIconButton onClick={() => setDrawerOpen(true)}>
             <Avatar src='/avatar.png' />
           </StyledIconButton>
-          <Drawer anchor='right' open={open} onClose={handleClose}>
+          <Drawer anchor='right' open={drawerOpen} onClose={handleClose}>
             <MobileDropDown onClose={handleClose} />
           </Drawer>
         </>
@@ -44,20 +94,33 @@ const HeaderButtons = () => {
           <StyledIconButton onClick={toogleTheme}>
             <AppIcon name='mode' size={20} />
           </StyledIconButton>
-          {ICONS.map(item => (
-            <StyledIconButton key={item.icon}>
-              <AppIcon name={item.icon as IconName} size={20} />
-            </StyledIconButton>
-          ))}
-          <Stack direction='row' alignItems='center' height={40}>
-            <StyledIconButton onClick={handleClick}>
-              <Avatar src='/avatar.png' />
-            </StyledIconButton>
-            <Box component='span'>
-              <AppIcon name='menu' size={20} className='menu' />
-            </Box>
-          </Stack>
+          <StyledIconButton>
+            <AppIcon name='search' size={20} />
+          </StyledIconButton>
+          {isLoggedIn ? (
+            <>
+              <StyledIconButton>
+                <AppIcon name='alarm' size={20} />
+              </StyledIconButton>
+              <StyledIconButton>
+                <AppIcon name='message' size={20} />
+              </StyledIconButton>
+              <Stack direction='row' alignItems='center' height={40}>
+                <StyledIconButton onClick={handleClick}>
+                  <Avatar src='/avatar.png' />
+                </StyledIconButton>
+                <Box component='span'>
+                  <AppIcon name='menu' size={20} className='menu' />
+                </Box>
+              </Stack>
+            </>
+          ) : (
+            <LoginButton startIcon={<AppIcon name='person' size={16} />} onClick={() => setOpen(true)}>
+              Login
+            </LoginButton>
+          )}
           <ProfileDropDown anchorEl={anchorEl} setAnchorEl={setAnchorEl} />
+          <AuthDialog open={open} setOpen={setOpen} />
         </Stack>
       )}
     </>

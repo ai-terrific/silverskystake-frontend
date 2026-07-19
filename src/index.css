@@ -15,3 +15,49 @@ code {
 .menu {
   cursor: pointer;
 }
+
+
+/* Toast Container margin */
+.Toastify__toast-container {
+  padding: 10px;
+}
+
+/* Toast border radius and padding */
+.Toastify__toast {
+  border-radius: 12px !important;
+  padding: 16px !important;
+  min-height: 64px;
+}
+
+/* Optional: Different radius for different toast types */
+.Toastify__toast--success {
+  border-radius: 12px !important;
+  padding: 16px !important;
+}
+
+.Toastify__toast--error {
+  border-radius: 12px !important;
+  padding: 16px !important;
+}
+
+.Toastify__toast--warning {
+  border-radius: 12px !important;
+  padding: 16px !important;
+}
+
+.Toastify__toast--info {
+  border-radius: 12px !important;
+  padding: 16px !important;
+}
+
+/* Toast body padding adjustment */
+.Toastify__toast-body {
+  padding: 0;
+  margin: 0;
+}
+
+/* Progress bar border radius */
+.Toastify__progress-bar {
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+}

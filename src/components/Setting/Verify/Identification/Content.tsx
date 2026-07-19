@@ -13,9 +13,13 @@ import {
   Typography,
   styled
 } from '@mui/material'
+import { ChangeEvent, useCallback, useState } from 'react'
+import { toast } from 'react-toastify'
 
 import { AppIcon } from '@/components/Core'
-import { StyledSelect } from '@/components/common.style'
+import { StyledSelect, VisuallyHiddenInput } from '@/components/common.style'
+import { userService } from '@/services'
+import { handleError } from '@/util'
 
 const UploadImage = styled(Box)(({ theme }) => ({
   height: 190,
@@ -29,6 +33,32 @@ const UploadImage = styled(Box)(({ theme }) => ({
 }))
 
 const IdentificationContent = () => {
+  const [front, setFront] = useState<File | null>(null)
+  const [back, setBack] = useState<File | null>(null)
+
+  const handleFileChange = useCallback(
+    (side: string) => (event: ChangeEvent<HTMLInputElement>) => {
+      const file = event.target.files?.[0]
+      if (file) {
+        if (side === 'front') setFront(file)
+        else setBack(file)
+      }
+    },
+    [front, back]
+  )
+
+  const handleSubmit = async () => {
+    try {
+      const data = new FormData()
+      if (front) data.append('front', front)
+      if (back) data.append('back', back)
+      const response = await userService.uploadIdentification(data)
+      toast.success(response.message, { hideProgressBar: true })
+    } catch (err) {
+      handleError(err)
+    }
+  }
+
   return (
     <Stack spacing={3}>
       <Divider />
@@ -66,8 +96,14 @@ const IdentificationContent = () => {
                   <Typography variant='body2' color='secondary'>
                     Front side
                   </Typography>
-                  <Button variant='outlined' color='inherit' startIcon={<AppIcon name='upload' size={16} />}>
+                  <Button
+                    component='label'
+                    variant='outlined'
+                    color='inherit'
+                    startIcon={<AppIcon name='upload' size={16} />}
+                  >
                     Upload
+                    <VisuallyHiddenInput type='file' onChange={handleFileChange('front')} multiple />
                   </Button>
                 </UploadImage>
               </Grid2>
@@ -77,8 +113,14 @@ const IdentificationContent = () => {
                   <Typography variant='body2' color='secondary'>
                     Back side
                   </Typography>
-                  <Button variant='outlined' color='inherit' startIcon={<AppIcon name='upload' size={16} />}>
+                  <Button
+                    component='label'
+                    variant='outlined'
+                    color='inherit'
+                    startIcon={<AppIcon name='upload' size={16} />}
+                  >
                     Upload
+                    <VisuallyHiddenInput type='file' onChange={handleFileChange('back')} multiple />
                   </Button>
                 </UploadImage>
               </Grid2>
@@ -91,7 +133,9 @@ const IdentificationContent = () => {
       </Stack>
       <Divider />
       <Stack direction='row' justifyContent='flex-end'>
-        <Button variant='contained'>SUBMIT</Button>
+        <Button variant='contained' onClick={handleSubmit}>
+          SUBMIT
+        </Button>
       </Stack>
     </Stack>
   )

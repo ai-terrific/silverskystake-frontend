@@ -1,5 +1,4 @@
 import {
-  Button,
   List,
   Stack,
   Table,
@@ -12,15 +11,19 @@ import {
   styled,
   useTheme
 } from '@mui/material'
-import { useState } from 'react'
+import { formatDistance } from 'date-fns'
+import { useCallback, useEffect, useState } from 'react'
+import { toast } from 'react-toastify'
 
 import { StyledListItem } from '@/components/common.style'
-import { IGNORED_USER } from '@/constants'
 import { useDeviceType } from '@/hooks'
+import { userService } from '@/services'
+import { useSelector } from '@/store'
 import { color } from '@/theme'
-import { IgnoredUserType } from '@/types'
+import { IgnoredUser } from '@/types'
+import { handleError } from '@/util'
 
-const TextButton = styled(Typography)(({ theme }) => ({
+const TextButton = styled(Typography)(({}) => ({
   color: color.prime,
   '&:hover': {
     cursor: 'pointer',
@@ -31,29 +34,50 @@ const TextButton = styled(Typography)(({ theme }) => ({
 const IgnoredUsersSetting = () => {
   const theme = useTheme()
   const { isMobile } = useDeviceType()
+  const { token } = useSelector(store => store.auth)
+  console.log(token)
 
-  const [ignoredUsers, setIgnoredUsers] = useState<IgnoredUserType[]>(IGNORED_USER)
+  const [ignoredUsers, setIgnoredUsers] = useState<IgnoredUser[]>([])
 
-  const handleRemoveUser = (index: number) => {
-    ignoredUsers.splice(index, 1)
-    setIgnoredUsers([...ignoredUsers])
-  }
+  const getIgnoredUsers = useCallback(async () => {
+    try {
+      const response = await userService.getIgnoreUsers()
+      console.log(response)
+      setIgnoredUsers(response)
+    } catch (err) {
+      handleError(err)
+    }
+  }, [])
+
+  const handleRemoveUser = useCallback(async (ignoredUser: string) => {
+    try {
+      const response = await userService.removeSession(ignoredUser)
+      getIgnoredUsers()
+      toast.success(response.message, { hideProgressBar: true })
+    } catch (err) {
+      handleError(err)
+    }
+  }, [])
+
+  useEffect(() => {
+    getIgnoredUsers()
+  }, [])
 
   return (
     <>
       {isMobile ? (
         <List>
-          {IGNORED_USER.map((item, index) => (
-            <StyledListItem key={item.username}>
+          {ignoredUsers.map((item, index) => (
+            <StyledListItem key={`index-${index}`}>
               <Stack direction='row' width='100%' justifyContent='space-between' alignItems='center'>
                 <Stack>
-                  <Typography>{item.username}</Typography>
+                  <Typography>{item.user.username}</Typography>
                   <Typography variant='body2' color='secondary'>
-                    {item.lastUsed}
+                    {formatDistance(new Date(item?.createdAt), Date.now(), { addSuffix: true })}
                   </Typography>
                 </Stack>
                 <Typography variant='body2'>
-                  <TextButton onClick={() => handleRemoveUser(index)}>Remove</TextButton>
+                  <TextButton onClick={() => handleRemoveUser(item.user._id)}>Remove</TextButton>
                 </Typography>
               </Stack>
             </StyledListItem>
@@ -70,12 +94,14 @@ const IgnoredUsersSetting = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {IGNORED_USER.map((item, index) => (
-                <TableRow key={item.username}>
-                  <TableCell>{item.username}</TableCell>
-                  <TableCell sx={{ color: theme.palette.secondary.main }}>{item.lastUsed}</TableCell>
+              {ignoredUsers.map((item, index) => (
+                <TableRow key={`index-${index}`}>
+                  <TableCell>{item.user.username}</TableCell>
+                  <TableCell sx={{ color: theme.palette.secondary.main }}>
+                    {formatDistance(new Date(item?.createdAt), Date.now(), { addSuffix: true })}
+                  </TableCell>
                   <TableCell align='right'>
-                    <TextButton onClick={() => handleRemoveUser(index)}>Remove</TextButton>
+                    <TextButton onClick={() => handleRemoveUser(item.user._id)}>Remove</TextButton>
                   </TableCell>
                 </TableRow>
               ))}

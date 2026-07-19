@@ -14,7 +14,8 @@ import { Link, useNavigate } from 'react-router-dom'
 
 import { AppIcon, MobileLogo } from '@/components/Core'
 import { StyledCard, StyledIconButton } from '@/components/common.style'
-import { ICONS, PROFILE_ITEMS } from '@/constants'
+import { PROFILE_ITEMS } from '@/constants'
+import { dispatch, logout } from '@/store'
 
 import CoinSelect from '../CoinSelect'
 
@@ -51,6 +52,11 @@ const MobileDropDown = ({ onClose }: { onClose: () => void }) => {
     else setMode('dark')
   }
 
+  const handleClick = (link: string) => {
+    navigate(link)
+    if (link == '/') dispatch(logout())
+  }
+
   return (
     <Stack minHeight='100vh' padding='0 20px' spacing={2}>
       <Stack direction='row' padding='16px 0' justifyContent='space-between' alignItems='center' spacing={2}>
@@ -65,11 +71,15 @@ const MobileDropDown = ({ onClose }: { onClose: () => void }) => {
         </Stack>
       </Stack>
       <CoinSelect />
-      {ICONS.map(item => (
-        <CustomizedButton variant='outlined' startIcon={<AppIcon name={item.icon} size={20} />} color='inherit'>
-          {item.label}
-        </CustomizedButton>
-      ))}
+      <CustomizedButton variant='outlined' startIcon={<AppIcon name='search' size={20} />} color='inherit'>
+        Search
+      </CustomizedButton>
+      <CustomizedButton variant='outlined' startIcon={<AppIcon name='alarm' size={20} />} color='inherit'>
+        Notifications
+      </CustomizedButton>
+      <CustomizedButton variant='outlined' startIcon={<AppIcon name='message' size={20} />} color='inherit'>
+        Messages
+      </CustomizedButton>
       <CustomizedAccordion disableGutters defaultExpanded>
         <CustomizedSummary expandIcon={<AppIcon name='dropdown' size={20} />}>
           <Stack direction='row' spacing={1}>
@@ -92,7 +102,7 @@ const MobileDropDown = ({ onClose }: { onClose: () => void }) => {
               <Grid2 size={4} key={item.label}>
                 <StyledCard
                   sx={{ borderBottomLeftRadius: index === 9 ? 18 : 0 }}
-                  onClick={() => navigate(item.link)}
+                  onClick={() => handleClick(item.link)}
                   elevation={0}
                 >
                   <Stack spacing={1} justifyContent='center' alignItems='center' padding={2}>

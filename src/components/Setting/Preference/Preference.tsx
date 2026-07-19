@@ -1,4 +1,4 @@
-import { FormControl, InputLabel, ListItemIcon, ListItemText, MenuItem, Stack, Typography } from '@mui/material'
+import { Box, FormControl, InputLabel, ListItemIcon, ListItemText, MenuItem, Stack, Typography } from '@mui/material'
 
 import { AppIcon } from '@/components/Core'
 import { StyledSelect } from '@/components/common.style'
@@ -19,9 +19,16 @@ const Preference = () => {
           </InputLabel>
           <StyledSelect variant='outlined' fullWidth defaultValue='US'>
             {REGION.map(item => (
-              <MenuItem value={item.icon} key={item.country}>
+              <MenuItem value={item.code} key={item.country}>
                 <ListItemIcon>
-                  <AppIcon name='US' width={22} height={14} />
+                  <Box
+                    component='img'
+                    loading='lazy'
+                    width='20'
+                    srcSet={`https://flagcdn.com/w40/${item.code.toLowerCase()}.png 2x`}
+                    src={`https://flagcdn.com/w20/${item.code.toLowerCase()}.png`}
+                    alt=''
+                  />
                 </ListItemIcon>
                 <ListItemText>{item.country}</ListItemText>
               </MenuItem>

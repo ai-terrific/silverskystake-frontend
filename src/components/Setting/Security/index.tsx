@@ -1,4 +1,4 @@
-import { Divider, Stack, Typography, useTheme } from '@mui/material'
+import { Divider, Stack, Typography } from '@mui/material'
 import { ChangeEvent, useState } from 'react'
 
 import { StyledSwitch } from '@/components/common.style'

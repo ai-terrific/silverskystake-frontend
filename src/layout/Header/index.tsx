@@ -1,4 +1,4 @@
-import { Box, Divider, Drawer, IconButton, Stack, Tab, Tabs, Typography, styled } from '@mui/material'
+import { Box, Divider, Drawer, Stack, Tab, Tabs, Typography, styled } from '@mui/material'
 import { SyntheticEvent, memo, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 
@@ -10,7 +10,7 @@ import MobileSidebar from '../Sidebar/MobileSidebar'
 import HeaderButtons from './Buttons'
 import CoinSelect from './CoinSelect'
 
-const TabLabel = styled(Stack)(({ theme }) => ({
+const TabLabel = styled(Stack)(({ }) => ({
   flexDirection: 'row',
   gap: 8,
   alignItems: 'center'

@@ -1,15 +1,28 @@
 interface RegionType {
   country: string
-  icon: string
+  code: string
+  places: string[]
 }
 
 export const REGION: RegionType[] = [
   {
     country: 'United States (EN)',
-    icon: 'US'
+    code: 'US',
+    places: ['California', 'New York', 'Florida', 'Texas', 'Illinois']
+  },
+  {
+    country: 'United Kingdom',
+    code: 'GB',
+    places: ['Cornwall', 'Essex', 'Kent', 'Yorkshire', 'Surrey']
   },
   {
     country: 'French',
-    icon: 'Fr'
+    code: 'FR',
+    places: ['Île-de-France', 'Brittany', 'Normandy', 'Provence-Alpes-Côte d’Azur', 'New Aquitaine']
+  },
+  {
+    country: 'Italy',
+    code: 'IT',
+    places: ['Lazio', 'Tuscany', 'Lombardy', 'Sicily', 'Campania']
   }
 ]

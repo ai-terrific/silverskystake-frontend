@@ -5,29 +5,27 @@ import { AuthState } from '@/types'
 const initialState: AuthState = {
   isLoggedIn: false,
   user: null,
-  token: ''
+  token: null
 }
 
 const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    signIn(state, action: PayloadAction<{ user: AuthState['user']; token: string }>) {
+    login(state, action: PayloadAction<{ user: AuthState['user']; token: string }>) {
+      console.log(action.payload)
       state.isLoggedIn = true
       state.user = action.payload.user
       state.token = action.payload.token
     },
-    signOut(state) {
+    logout(state) {
       state.isLoggedIn = false
       state.user = null
       state.token = null
-    },
-    updateUser(state, action: PayloadAction<{ user: AuthState['user'] }>) {
-      state.user = action.payload.user
     }
   }
 })
 
 export default authSlice.reducer
 
-export const { signIn, signOut, updateUser } = authSlice.actions
+export const { login, logout } = authSlice.actions

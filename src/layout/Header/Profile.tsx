@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import { AppIcon } from '@/components/Core'
 import { StyledCard, StyledIconButton } from '@/components/common.style'
 import { PROFILE_ITEMS } from '@/constants'
+import { dispatch, logout } from '@/store'
 
 interface DropDownType {
   anchorEl: HTMLButtonElement | null
@@ -18,6 +19,12 @@ const ProfileDropDown: FC<DropDownType> = ({ anchorEl, setAnchorEl }: DropDownTy
   }
 
   const open = Boolean(anchorEl)
+
+  const handleClick = (link: string) => {
+    if (link == '/') dispatch(logout())
+    navigate(link)
+    handleClose()
+  }
 
   return (
     <Popover
@@ -54,7 +61,7 @@ const ProfileDropDown: FC<DropDownType> = ({ anchorEl, setAnchorEl }: DropDownTy
             <Grid2 size={4} key={item.label}>
               <StyledCard
                 sx={{ borderBottomLeftRadius: index === 9 ? 18 : 0 }}
-                onClick={() => navigate(item.link)}
+                onClick={() => handleClick(item.link)}
                 elevation={0}
               >
                 <Stack spacing={1} justifyContent='center' alignItems='center' padding={2}>
