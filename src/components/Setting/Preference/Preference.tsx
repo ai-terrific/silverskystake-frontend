@@ -1,6 +1,5 @@
 import { Box, FormControl, InputLabel, ListItemIcon, ListItemText, MenuItem, Stack, Typography } from '@mui/material'
 
-import { AppIcon } from '@/components/Core'
 import { StyledSelect } from '@/components/common.style'
 import { REGION } from '@/constants'
 

@@ -1,6 +1,6 @@
 import { Button, Divider, FormControl, Grid2, InputLabel, MenuItem, Stack, Typography } from '@mui/material'
 import { SelectChangeEvent } from '@mui/material/Select'
-import { ChangeEvent, ReactNode, useCallback, useEffect, useState } from 'react'
+import { ChangeEvent, useCallback, useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 
 import { StyledInput, StyledSelect } from '@/components/common.style'

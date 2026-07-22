@@ -17,7 +17,7 @@ const AlertCard = styled(Card)(({ theme }) => ({
   })
 }))
 
-const CardAlertButton = styled(Button)(({ }) => ({
+const CardAlertButton = styled(Button)(({}) => ({
   width: 'fit-content',
   color: color.white,
   borderRadius: 8,

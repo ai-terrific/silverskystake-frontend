@@ -1,4 +1,5 @@
 import {
+  Box,
   Button,
   Card,
   IconButton,
@@ -204,3 +205,16 @@ export const VisuallyHiddenInput = styled('input')({
   whiteSpace: 'nowrap',
   width: 1
 })
+
+export const UploadImage = styled(Box)(({ theme }) => ({
+  height: 190,
+  display: 'flex',
+  flexDirection: 'column',
+  gap: 12,
+  borderRadius: 16,
+  alignItems: 'center',
+  justifyContent: 'center',
+  background: 'center',
+  backgroundColor: theme.palette.background.default,
+  backgroundRepeat: 'no-repeat !important'
+}))

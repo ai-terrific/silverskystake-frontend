@@ -10,7 +10,7 @@ import MobileSidebar from '../Sidebar/MobileSidebar'
 import HeaderButtons from './Buttons'
 import CoinSelect from './CoinSelect'
 
-const TabLabel = styled(Stack)(({ }) => ({
+const TabLabel = styled(Stack)(({}) => ({
   flexDirection: 'row',
   gap: 8,
   alignItems: 'center'

@@ -2,7 +2,6 @@ import { InfoOutlined } from '@mui/icons-material'
 import {
   Alert,
   AlertTitle,
-  Box,
   Button,
   Divider,
   FormControl,
@@ -10,31 +9,29 @@ import {
   InputLabel,
   MenuItem,
   Stack,
-  Typography,
-  styled
+  Typography
 } from '@mui/material'
-import { ChangeEvent, useCallback, useState } from 'react'
+import { ChangeEvent, useCallback, useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 
 import { AppIcon } from '@/components/Core'
-import { StyledSelect, VisuallyHiddenInput } from '@/components/common.style'
+import { StyledSelect, UploadImage, VisuallyHiddenInput } from '@/components/common.style'
+import { BASE_URL } from '@/configs'
 import { userService } from '@/services'
 import { handleError } from '@/util'
 
-const UploadImage = styled(Box)(({ theme }) => ({
-  height: 190,
-  backgroundColor: theme.palette.background.default,
-  display: 'flex',
-  flexDirection: 'column',
-  gap: 12,
-  borderRadius: 16,
-  alignItems: 'center',
-  justifyContent: 'center'
-}))
+interface PreviewUrlType {
+  front: string | null
+  back: string | null
+}
 
 const IdentificationContent = () => {
   const [front, setFront] = useState<File | null>(null)
   const [back, setBack] = useState<File | null>(null)
+  const [previewUrl, setPreviewUrl] = useState<PreviewUrlType>({
+    front: null,
+    back: null
+  })
 
   const handleFileChange = useCallback(
     (side: string) => (event: ChangeEvent<HTMLInputElement>) => {
@@ -42,10 +39,34 @@ const IdentificationContent = () => {
       if (file) {
         if (side === 'front') setFront(file)
         else setBack(file)
+
+        const url = URL.createObjectURL(file)
+        if (previewUrl.front && side === 'front') {
+          URL.revokeObjectURL(previewUrl.front)
+        }
+        if (previewUrl.back && side === 'back') {
+          URL.revokeObjectURL(previewUrl.back)
+        }
+        console.log({ ...previewUrl })
+        setPreviewUrl({ ...previewUrl, [side]: url })
       }
     },
     [front, back]
   )
+
+  const getIdentification = useCallback(async () => {
+    try {
+      const response = await userService.getIdentificationInfo()
+
+      setPreviewUrl({
+        ...previewUrl,
+        front: `${BASE_URL}/uploads/${response.front}`,
+        back: `${BASE_URL}/uploads/${response.back}`
+      })
+    } catch (err) {
+      handleError(err)
+    }
+  }, [])
 
   const handleSubmit = async () => {
     try {
@@ -53,11 +74,16 @@ const IdentificationContent = () => {
       if (front) data.append('front', front)
       if (back) data.append('back', back)
       const response = await userService.uploadIdentification(data)
+      getIdentification()
       toast.success(response.message, { hideProgressBar: true })
     } catch (err) {
       handleError(err)
     }
   }
+
+  useEffect(() => {
+    getIdentification()
+  }, [])
 
   return (
     <Stack spacing={3}>
@@ -91,7 +117,7 @@ const IdentificationContent = () => {
             </InputLabel>
             <Grid2 container spacing={3}>
               <Grid2 size={{ xs: 12, md: 6 }}>
-                <UploadImage>
+                <UploadImage sx={{ backgroundImage: `url(${previewUrl.front})` }}>
                   <AppIcon name='image' size={24} />
                   <Typography variant='body2' color='secondary'>
                     Front side
@@ -108,7 +134,7 @@ const IdentificationContent = () => {
                 </UploadImage>
               </Grid2>
               <Grid2 size={{ xs: 12, md: 6 }}>
-                <UploadImage>
+                <UploadImage sx={{ backgroundImage: `url(${previewUrl.back})` }}>
                   <AppIcon name='image' size={24} />
                   <Typography variant='body2' color='secondary'>
                     Back side

@@ -25,7 +25,7 @@ import MobileDropDown from './MobileDropDown'
 import ProfileDropDown from './Profile'
 import Register from './Register'
 
-const LoginButton = styled(Button)(({ }) => ({
+const LoginButton = styled(Button)(({}) => ({
   backgroundColor: '#F09C01',
   color: color.white
 }))
@@ -36,8 +36,8 @@ const AuthDialog = ({ open, setOpen }: { open: boolean; setOpen: Dispatch<SetSta
   const handleChange = (event: SyntheticEvent, newValue: string) => {
     setValue(newValue)
   }
-  
-return (
+
+  return (
     <Dialog open={open} onClose={() => setOpen(false)} maxWidth='sm' fullWidth>
       <DialogContent>
         <Stack spacing={3}>

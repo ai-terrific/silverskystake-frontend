@@ -65,7 +65,7 @@ const SessionSetting = () => {
     <>
       {isMobile ? (
         <List>
-          {sessions.map((item,) => (
+          {sessions.map(item => (
             <StyledListItem key={item.browser}>
               <Stack spacing={1} width='100%'>
                 <Stack>
@@ -112,7 +112,7 @@ const SessionSetting = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {sessions.map((item,) => (
+              {sessions.map(item => (
                 <TableRow key={item.browser}>
                   <TableCell>{item.browser}</TableCell>
                   <TableCell sx={{ color: theme.palette.secondary.main }}>{item.near}</TableCell>

@@ -5,7 +5,7 @@ import { toast } from 'react-toastify'
 
 import { StyledInput, SubmitButton } from '@/components/common.style'
 import { userService } from '@/services'
-import { AccountType, OfferType } from '@/types'
+import { OfferType } from '@/types'
 import { handleError } from '@/util'
 
 const OfferContent = styled(Stack)(({ theme }) => ({
@@ -49,6 +49,7 @@ const OfferItem = () => {
   useEffect(() => {
     getOfferData()
   }, [])
+
   return (
     <OfferContent spacing={3}>
       <Stack spacing={0.5}>

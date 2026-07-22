@@ -1,20 +1,57 @@
 import { InfoOutlined } from '@mui/icons-material'
-import { Alert, AlertTitle, Box, Button, Divider, Grid2, InputLabel, Stack, Typography, styled } from '@mui/material'
+import { Alert, AlertTitle, Button, Divider, Grid2, InputLabel, Stack, Typography } from '@mui/material'
+import { ChangeEvent, useCallback, useEffect, useState } from 'react'
+import { toast } from 'react-toastify'
 
 import { AppIcon } from '@/components/Core'
-
-const UploadImage = styled(Box)(({ theme }) => ({
-  height: 190,
-  backgroundColor: theme.palette.background.default,
-  display: 'flex',
-  flexDirection: 'column',
-  gap: 12,
-  borderRadius: 16,
-  alignItems: 'center',
-  justifyContent: 'center'
-}))
+import { UploadImage, VisuallyHiddenInput } from '@/components/common.style'
+import { BASE_URL } from '@/configs'
+import { userService } from '@/services'
+import { handleError } from '@/util'
 
 const FundSourceContent = () => {
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null)
+  const [fundSource, setFundSource] = useState<File | null>(null)
+
+  const handleFileChange = useCallback(
+    (event: ChangeEvent<HTMLInputElement>) => {
+      const file = event.target.files?.[0]
+      if (file) {
+        setFundSource(file)
+        if (previewUrl) {
+          URL.revokeObjectURL(previewUrl)
+        }
+        const url = URL.createObjectURL(file)
+        setPreviewUrl(url)
+      }
+    },
+    [previewUrl]
+  )
+  const handleSubmit = async () => {
+    try {
+      const data = new FormData()
+      if (fundSource) data.append('fundSource', fundSource)
+      const response = await userService.uploadSourceOfFund(data)
+      getSourceOfFund()
+      toast.success(response.message, { hideProgressBar: true })
+    } catch (err) {
+      handleError(err)
+    }
+  }
+
+  const getSourceOfFund = useCallback(async () => {
+    try {
+      const response = await userService.getSourceOfFund()
+      setPreviewUrl(`${BASE_URL}/uploads/${response.fund}`)
+    } catch (err) {
+      handleError(err)
+    }
+  }, [])
+
+  useEffect(() => {
+    getSourceOfFund()
+  }, [])
+
   return (
     <Stack spacing={{ xs: 2, md: 3 }}>
       <Divider />
@@ -35,13 +72,19 @@ const FundSourceContent = () => {
             </InputLabel>
             <Grid2 container spacing={3}>
               <Grid2 size={{ xs: 12, md: 6 }}>
-                <UploadImage>
+                <UploadImage sx={{ backgroundImage: `url(${previewUrl})` }}>
                   <AppIcon name='image' size={24} />
                   <Typography variant='body2' color='secondary'>
                     Upload source of fund
                   </Typography>
-                  <Button variant='outlined' color='inherit' startIcon={<AppIcon name='upload' size={16} />}>
+                  <Button
+                    component='label'
+                    variant='outlined'
+                    color='inherit'
+                    startIcon={<AppIcon name='upload' size={16} />}
+                  >
                     Upload
+                    <VisuallyHiddenInput type='file' onChange={handleFileChange} />
                   </Button>
                 </UploadImage>
               </Grid2>
@@ -54,7 +97,9 @@ const FundSourceContent = () => {
       </Stack>
       <Divider />
       <Stack direction='row' justifyContent='flex-end'>
-        <Button variant='contained'>SUBMIT</Button>
+        <Button variant='contained' onClick={handleSubmit}>
+          SUBMIT
+        </Button>
       </Stack>
     </Stack>
   )

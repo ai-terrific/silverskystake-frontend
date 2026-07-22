@@ -50,7 +50,7 @@ export const inputCustomization: Components<Theme> = {
   },
   MuiButtonBase: {
     styleOverrides: {
-      root: ({ }) => ({
+      root: ({}) => ({
         transition: '0.3s',
         ':hover': {
           opacity: '0.7'
@@ -398,7 +398,7 @@ export const inputCustomization: Components<Theme> = {
           color: theme.palette.text.disabled
         }
       }),
-      icon: ({ }) => ({
+      icon: ({}) => ({
         backgroundColor: '#1A2027'
       })
     }
@@ -506,7 +506,7 @@ export const inputCustomization: Components<Theme> = {
         border: '1px',
         backgroundColor: theme.palette.background.paper
       }),
-      icon: ({ }) => ({
+      icon: ({}) => ({
         marginTop: '-2px',
         '& path': {
           stroke: '#868A92'

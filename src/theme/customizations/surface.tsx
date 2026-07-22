@@ -1,4 +1,3 @@
-
 import { Components, Theme } from '@mui/material/styles'
 
 import { color } from '../themePrimitives'
