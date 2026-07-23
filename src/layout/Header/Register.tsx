@@ -3,7 +3,7 @@ import { ChangeEvent, useCallback, useState } from 'react'
 import { toast } from 'react-toastify'
 
 import { StyledInput } from '@/components/common.style'
-import { registerUser } from '@/services'
+import { authService } from '@/services'
 import { RegisterForm } from '@/types'
 import { handleError } from '@/util'
 
@@ -24,7 +24,7 @@ const Register = () => {
 
   const handleSubmit = useCallback(async () => {
     try {
-      const response = await registerUser(formData)
+      const response = await authService.registerUser(formData)
       toast.success(response.message, { hideProgressBar: true })
     } catch (err) {
       handleError(err)

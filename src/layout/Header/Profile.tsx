@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import { AppIcon } from '@/components/Core'
 import { StyledCard, StyledIconButton } from '@/components/common.style'
 import { PROFILE_ITEMS } from '@/constants'
-import { dispatch, logout } from '@/store'
+import { dispatch, logout, useSelector } from '@/store'
 
 interface DropDownType {
   anchorEl: HTMLButtonElement | null
@@ -14,6 +14,7 @@ interface DropDownType {
 
 const ProfileDropDown: FC<DropDownType> = ({ anchorEl, setAnchorEl }: DropDownType) => {
   const navigate = useNavigate()
+  const { user } = useSelector(store => store.auth)
   const handleClose = () => {
     setAnchorEl(null)
   }
@@ -21,8 +22,11 @@ const ProfileDropDown: FC<DropDownType> = ({ anchorEl, setAnchorEl }: DropDownTy
   const open = Boolean(anchorEl)
 
   const handleClick = (link: string) => {
-    if (link == '/') dispatch(logout())
-    navigate(link)
+    console.log(user)
+    if (link == '/') {
+      navigate(link)
+      dispatch(logout())
+    }
     handleClose()
   }
 

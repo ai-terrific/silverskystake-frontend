@@ -10,6 +10,7 @@ export interface LoginUserRes {
   user: User | null
   token: string
   message?: string
+  twoFARequired?: boolean
 }
 
 export interface RegisterUserRes {

@@ -12,29 +12,29 @@ import { persistor, store } from './store'
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 
 root.render(
-  <StyledEngineProvider>
-    <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
-        <ErrorBoundary
-          fallbackRender={({ error, resetErrorBoundary }) => (
-            <div role='alert'>
-              <p>Something went wrong:</p>
-              <pre>{getErrorMessage(error)}</pre>
-              <button onClick={resetErrorBoundary}>Try again</button>
-            </div>
-          )}
-          onError={() => {
-            // Log the error to your error reporting service
-          }}
-          onReset={() => {
-            // Reset any state that may have caused the error
-          }}
-        >
+  <ErrorBoundary
+    fallbackRender={({ error, resetErrorBoundary }) => (
+      <div role='alert'>
+        <p>Something went wrong:</p>
+        <pre>{getErrorMessage(error)}</pre>
+        <button onClick={resetErrorBoundary}>Try again</button>
+      </div>
+    )}
+    onError={() => {
+      // Log the error to your error reporting service
+    }}
+    onReset={() => {
+      // Reset any state that may have caused the error
+    }}
+  >
+    <StyledEngineProvider>
+      <Provider store={store}>
+        <PersistGate loading={null} persistor={persistor}>
           <App />
-        </ErrorBoundary>
-      </PersistGate>
-    </Provider>
-  </StyledEngineProvider>
+        </PersistGate>
+      </Provider>
+    </StyledEngineProvider>
+  </ErrorBoundary>
 )
 
 // If you want to start measuring performance in your app, pass a function

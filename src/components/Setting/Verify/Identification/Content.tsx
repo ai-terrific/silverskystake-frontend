@@ -47,7 +47,6 @@ const IdentificationContent = () => {
         if (previewUrl.back && side === 'back') {
           URL.revokeObjectURL(previewUrl.back)
         }
-        console.log({ ...previewUrl })
         setPreviewUrl({ ...previewUrl, [side]: url })
       }
     },

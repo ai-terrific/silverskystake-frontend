@@ -39,7 +39,7 @@ const Header = () => {
   const [value, setValue] = useState<Mode>('casino')
   const [open, setOpen] = useState<boolean>(false)
 
-  const handleChange = (event: SyntheticEvent, newValue: Mode) => {
+  const handleChange = (_: SyntheticEvent, newValue: Mode) => {
     setValue(newValue)
   }
 

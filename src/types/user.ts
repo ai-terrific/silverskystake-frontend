@@ -12,6 +12,8 @@ export interface User extends Entity {
   _id: string
   email: string
   username: string
+  secret: string
+  twoFARequired: boolean
 }
 
 export interface Profile extends Entity {
@@ -66,4 +68,27 @@ export interface OfferType {
 export interface IdentificationType {
   front: string
   back: string
+}
+
+export interface TwoFAEnable {
+  enable: boolean
+}
+
+export interface TwoFAGenerationType {
+  secret: string
+  qrCode: string
+  message?: string
+}
+
+export interface VerifyType {
+  code: string
+}
+
+export interface ValidationType extends VerifyType {
+  email: string
+}
+
+export interface TwoFactorResponseType {
+  isValid: boolean
+  message: string
 }

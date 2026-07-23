@@ -77,16 +77,19 @@ export const surfaceCustomization: Components<Theme> = {
         gap: '8px',
         minWidth: 'fit-content',
         textTransform: 'capitalize',
-        justifyContent: 'flex-start',
         background: theme.palette.background.paper,
+        justifyContent: 'flex-start',
         border: '1px solid #E8EDF3',
         '&.Mui-selected': {
+          background: color.gradient,
+          color: color.white,
           boxShadow: theme.palette.baseShadow
         },
         [theme.breakpoints.down('lg')]: {
           padding: '12px'
         },
         ...theme.applyStyles('dark', {
+          background: theme.palette.background.paper,
           borderColor: color.prime,
           '&.Mui-selected': {
             backgroundColor: '#06344CF0',

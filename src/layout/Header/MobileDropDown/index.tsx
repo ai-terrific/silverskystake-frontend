@@ -15,7 +15,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { AppIcon, MobileLogo } from '@/components/Core'
 import { StyledCard, StyledIconButton } from '@/components/common.style'
 import { PROFILE_ITEMS } from '@/constants'
-import { dispatch, logout } from '@/store'
+import { dispatch, logout, useSelector } from '@/store'
 
 import CoinSelect from '../CoinSelect'
 

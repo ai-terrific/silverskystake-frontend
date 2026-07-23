@@ -1,6 +1,16 @@
 import { API_ENDPOINTS } from '@/configs'
 import apiRequest from '@/services/axios'
-import { AccountType, IdentificationType, IgnoredUser, OfferType, ResponseType, Session } from '@/types'
+import {
+  AccountType,
+  IdentificationType,
+  IgnoredUser,
+  OfferType,
+  ResponseType,
+  Session,
+  TwoFAGenerationType,
+  TwoFactorResponseType,
+  VerifyType
+} from '@/types'
 
 export const getAccountInformation = async (): Promise<AccountType> => {
   return apiRequest({
@@ -38,7 +48,7 @@ export const getSessionData = async (): Promise<Session[]> => {
 
 export const removeSession = async (sessionId: string): Promise<ResponseType> => {
   return apiRequest({
-    method: 'GET',
+    method: 'DELETE',
     url: API_ENDPOINTS.SESSION.REMOVE(sessionId),
     errorMessage: 'Session remove failed'
   })
@@ -47,8 +57,16 @@ export const removeSession = async (sessionId: string): Promise<ResponseType> =>
 export const getIgnoreUsers = async (): Promise<IgnoredUser[]> => {
   return apiRequest({
     method: 'GET',
-    url: API_ENDPOINTS.USER.GET_IGNORED_USERS,
+    url: API_ENDPOINTS.USER.IGNORED_USERS,
     errorMessage: 'Account Information Update failed'
+  })
+}
+
+export const removeIgnoredUser = async (userId: string): Promise<ResponseType> => {
+  return apiRequest({
+    method: 'DELETE',
+    url: API_ENDPOINTS.USER.REMOVE_IGNORED_USERS(userId),
+    errorMessage: 'Remove ignored user failed'
   })
 }
 
@@ -74,7 +92,7 @@ export const uploadIdentification = async (data: FormData): Promise<ResponseType
   return apiRequest({
     method: 'POST',
     data,
-    url: API_ENDPOINTS.USER.UPLOAD_IDENTIFICATOIN,
+    url: API_ENDPOINTS.USER.IDENTIFICATOIN,
     errorMessage: 'Upload identification failed'
   })
 }
@@ -82,7 +100,7 @@ export const uploadIdentification = async (data: FormData): Promise<ResponseType
 export const getIdentificationInfo = async (): Promise<IdentificationType> => {
   return apiRequest({
     method: 'GET',
-    url: API_ENDPOINTS.USER.GET_IDENTIFICATOIN,
+    url: API_ENDPOINTS.USER.IDENTIFICATOIN,
     errorMessage: 'Identification Information failed'
   })
 }
@@ -91,7 +109,7 @@ export const uploadProofOfAddress = async (data: FormData): Promise<ResponseType
   return apiRequest({
     method: 'POST',
     data,
-    url: API_ENDPOINTS.USER.UPLOAD_ADDRESS,
+    url: API_ENDPOINTS.USER.ADDRESS,
     errorMessage: 'Upload proof of address failed'
   })
 }
@@ -99,7 +117,7 @@ export const uploadProofOfAddress = async (data: FormData): Promise<ResponseType
 export const getProofOfAddress = async (): Promise<Partial<AccountType>> => {
   return apiRequest({
     method: 'GET',
-    url: API_ENDPOINTS.USER.GET_ADDRESS,
+    url: API_ENDPOINTS.USER.ADDRESS,
     errorMessage: 'Get address failed'
   })
 }

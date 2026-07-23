@@ -34,15 +34,12 @@ const TextButton = styled(Typography)(({}) => ({
 const IgnoredUsersSetting = () => {
   const theme = useTheme()
   const { isMobile } = useDeviceType()
-  const { token } = useSelector(store => store.auth)
-  console.log(token)
 
   const [ignoredUsers, setIgnoredUsers] = useState<IgnoredUser[]>([])
 
   const getIgnoredUsers = useCallback(async () => {
     try {
       const response = await userService.getIgnoreUsers()
-      console.log(response)
       setIgnoredUsers(response)
     } catch (err) {
       handleError(err)
@@ -51,7 +48,7 @@ const IgnoredUsersSetting = () => {
 
   const handleRemoveUser = useCallback(async (ignoredUser: string) => {
     try {
-      const response = await userService.removeSession(ignoredUser)
+      const response = await userService.removeIgnoredUser(ignoredUser)
       getIgnoredUsers()
       toast.success(response.message, { hideProgressBar: true })
     } catch (err) {
