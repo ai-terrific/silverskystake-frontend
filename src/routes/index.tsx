@@ -4,6 +4,7 @@ import NotFound from '@/components/NotFound'
 import Promotion from '@/components/Setting/Promotion'
 import { routers } from '@/constants/routers'
 import Layout from '@/layout'
+import ResetPassword from '@/layout/ResetPassword'
 import SettingLayout from '@/layout/Setting'
 import AccountSetting from '@/pages/Setting/Account'
 import IgnoredUsersSetting from '@/pages/Setting/IgnoredUser'
@@ -85,6 +86,10 @@ const routes = createBrowserRouter([
         element: <NotFound />
       }
     ]
+  },
+  {
+    path: routers.RESET_PASSWORD,
+    element: <ResetPassword />
   }
 ])
 

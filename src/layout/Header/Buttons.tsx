@@ -20,6 +20,8 @@ import { useDeviceType } from '@/hooks'
 import { useSelector } from '@/store'
 import { color } from '@/theme'
 
+import CheckEmail from './CheckEmail'
+import ForgotPassword from './ForgotPassword'
 import Login from './Login'
 import MobileDropDown from './MobileDropDown'
 import ProfileDropDown from './Profile'
@@ -30,9 +32,16 @@ const LoginButton = styled(Button)(({}) => ({
   color: color.white
 }))
 
-const AuthDialog = ({ open, setOpen }: { open: boolean; setOpen: Dispatch<SetStateAction<boolean>> }) => {
-  const [value, setValue] = useState('login')
+type Mode = 'login' | 'register' | 'forgotPassword' | 'sentEmail'
 
+interface AuthDialogProps {
+  open: boolean
+  setOpen: Dispatch<SetStateAction<boolean>>
+  value: string
+  setValue: Dispatch<SetStateAction<string>>
+}
+
+const AuthDialog = ({ open, setOpen, value, setValue }: AuthDialogProps) => {
   const handleChange = (event: SyntheticEvent, newValue: string) => {
     setValue(newValue)
   }
@@ -50,7 +59,15 @@ const AuthDialog = ({ open, setOpen }: { open: boolean; setOpen: Dispatch<SetSta
               <AppIcon name='close' />
             </IconButton>
           </Stack>
-          {value === 'login' ? <Login setOpen={setOpen} /> : <Register />}
+          {value === 'login' ? (
+            <Login setOpen={setOpen} setValue={setValue} />
+          ) : value === 'register' ? (
+            <Register />
+          ) : value == 'forgotPassword' ? (
+            <ForgotPassword setValue={setValue} />
+          ) : (
+            <CheckEmail setValue={setValue} />
+          )}
         </Stack>
       </DialogContent>
     </Dialog>
@@ -69,6 +86,7 @@ const HeaderButtons = () => {
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null)
   const [drawerOpen, setDrawerOpen] = useState<boolean>(false)
   const [open, setOpen] = useState<boolean>(false)
+  const [value, setValue] = useState<string>('login')
 
   const handleClose = () => {
     setDrawerOpen(false)
@@ -120,7 +138,7 @@ const HeaderButtons = () => {
             </LoginButton>
           )}
           <ProfileDropDown anchorEl={anchorEl} setAnchorEl={setAnchorEl} />
-          <AuthDialog open={open} setOpen={setOpen} />
+          <AuthDialog open={open} setOpen={setOpen} value={value} setValue={setValue} />
         </Stack>
       )}
     </>

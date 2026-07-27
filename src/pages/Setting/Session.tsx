@@ -45,7 +45,7 @@ const SessionSetting = () => {
     }
   }, [])
 
-  const handleRemoveSession = useCallback(async (_id: string, status: boolean) => {
+  const handleRemoveSession = useCallback(async (_id: string, status: number) => {
     try {
       if (!status) {
         const response = await userService.removeSession(_id)
@@ -66,17 +66,17 @@ const SessionSetting = () => {
       {isMobile ? (
         <List>
           {sessions.map(item => (
-            <StyledListItem key={item.browser}>
+            <StyledListItem key={item.session.browser}>
               <Stack spacing={1} width='100%'>
                 <Stack>
-                  <Typography>{item.browser}</Typography>
+                  <Typography>{item.session.browser}</Typography>
                   <Typography variant='body2' color='secondary'>
-                    {item.near}
+                    {item.session.region}, {item.session.city}
                   </Typography>
                 </Stack>
                 <Stack direction='row' justifyContent='space-between'>
                   <Typography variant='body2' color='secondary'>
-                    {item.ip}
+                    {item.session.ip}
                   </Typography>
                   <Stack direction='row' spacing={3}>
                     <Typography variant='body2' color='secondary'>
@@ -89,7 +89,7 @@ const SessionSetting = () => {
                       sx={{
                         listStyleType: 'disc  '
                       }}
-                      onClick={() => handleRemoveSession(item._id, item.status)}
+                      onClick={() => handleRemoveSession(item._id, item.status || 0)}
                     >
                       {item.status ? 'Current' : 'Remove Session'}
                     </Typography>
@@ -113,15 +113,20 @@ const SessionSetting = () => {
             </TableHead>
             <TableBody>
               {sessions.map(item => (
-                <TableRow key={item.browser}>
-                  <TableCell>{item.browser}</TableCell>
-                  <TableCell sx={{ color: theme.palette.secondary.main }}>{item.near}</TableCell>
-                  <TableCell sx={{ color: theme.palette.secondary.main }}>{item.ip}</TableCell>
+                <TableRow key={item.session.browser}>
+                  <TableCell>{item.session.browser}</TableCell>
+                  <TableCell sx={{ color: theme.palette.secondary.main }}>
+                    {item.session.region}, {item.session.city}
+                  </TableCell>
+                  <TableCell sx={{ color: theme.palette.secondary.main }}>{item.session.ip}</TableCell>
                   <TableCell sx={{ color: theme.palette.secondary.main }}>
                     {formatDistance(new Date(item.updatedAt), Date.now(), { addSuffix: true })}
                   </TableCell>
                   <TableCell align='right' sx={{ color: !item.status ? color.red : '#0E1525' }}>
-                    <StatusTextButton status={item.status} onClick={() => handleRemoveSession(item._id, item.status)}>
+                    <StatusTextButton
+                      status={item.status > 0 || false}
+                      onClick={() => handleRemoveSession(item._id, item.status || 0)}
+                    >
                       {item.status ? 'Current' : 'Remove Session'}
                     </StatusTextButton>
                   </TableCell>

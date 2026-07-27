@@ -1,10 +1,13 @@
 import { API_ENDPOINTS } from '@/configs'
 import apiRequest from '@/services/axios'
 import {
+  Email,
   EmailPassword,
   LoginUserRes,
   RegisterForm,
   RegisterUserRes,
+  ResetPasswordType,
+  ResponseType,
   TwoFAEnable,
   TwoFAGenerationType,
   TwoFactorResponseType,
@@ -54,5 +57,23 @@ export const validationBy2FA = async (data: ValidationType): Promise<LoginUserRe
     data,
     url: API_ENDPOINTS.USER.VALIDATE_2FA,
     errorMessage: 'Two factor verification failed'
+  })
+}
+
+export const sendEmail = async (data: Email): Promise<ResponseType> => {
+  return apiRequest({
+    method: 'POST',
+    url: API_ENDPOINTS.AUTH.SEND_EMAIL,
+    data,
+    errorMessage: 'Email send failed'
+  })
+}
+
+export const resetPassword = async (data: ResetPasswordType): Promise<ResponseType> => {
+  return apiRequest({
+    method: 'POST',
+    url: API_ENDPOINTS.AUTH.RESET_PASSWORD,
+    data,
+    errorMessage: 'Registration failed'
   })
 }

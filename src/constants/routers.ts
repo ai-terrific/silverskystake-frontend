@@ -15,5 +15,6 @@ export const routers = {
   FORUM: '/forum',
   SPONSORSHIP: 'sponsorship',
   SUPPORT: '/support',
+  RESET_PASSWORD: '/:token/reset-password',
   NOT_FOUND: '*'
 }

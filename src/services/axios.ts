@@ -5,7 +5,8 @@ import { dispatch, logout, store } from '@/store'
 
 const axiosInstance: AxiosInstance = axios.create({
   baseURL: `${BASE_URL}/api/`,
-  timeout: 60000 // Timeout in milliseconds
+  timeout: 60000, // Timeout in milliseconds
+  withCredentials: true
 })
 
 // Add a request interceptor
@@ -13,9 +14,9 @@ axiosInstance.interceptors.request.use(
   config => {
     const token = store.getState().auth.token // Example: Retrieving token from localStorage
     if (token) {
-      config.headers.Authorization = `Bearer ${token}`
+      // config.headers.Authorization = `Bearer ${token}`
     }
-
+    config.headers.withCredentials = true // Ensure cookies are sent with requests
     return config
   },
   error => {

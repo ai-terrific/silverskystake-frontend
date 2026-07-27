@@ -1,6 +1,6 @@
 import Entity from './entity'
 
-interface Email {
+export interface Email {
   email: string
 }
 

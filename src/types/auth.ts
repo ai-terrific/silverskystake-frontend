@@ -2,6 +2,7 @@ import { User } from './user'
 
 export interface AuthState {
   isLoggedIn: boolean
+  verified2FA: boolean
   user: User | null
   token: string | null
 }
@@ -28,4 +29,10 @@ export interface RegisterForm {
 export interface LoginForm {
   email: string
   password: string
+}
+
+export interface ResetPasswordType {
+  token: string
+  password: string
+  confirmPassword: string
 }

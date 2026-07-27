@@ -1,10 +1,14 @@
 import { User } from './user'
 
 export interface SessionType {
-  browser: string
-  near: string
-  ip: string
-  status: boolean
+  session: {
+    email: string
+    region: string
+    city: string
+    browser: string
+    ip: string
+  }
+  status: number
 }
 
 export interface Session extends SessionType {

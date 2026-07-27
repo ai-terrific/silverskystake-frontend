@@ -1,5 +1,5 @@
 import { Divider, Stack, Typography } from '@mui/material'
-import { ChangeEvent, useState } from 'react'
+import { ChangeEvent, useEffect, useState } from 'react'
 
 import { StyledSwitch } from '@/components/common.style'
 import { authService } from '@/services'
@@ -25,6 +25,13 @@ const SecurityContent = () => {
     }
   }
 
+  useEffect(() => {
+    authService.get2FAAuthentication({ enable }).then(response => {
+      setSecret(response.secret)
+      setQRCode(response.qrCode)
+    })
+  }, [])
+
   return (
     <Stack spacing={3} flex={1}>
       <Stack direction='row' justifyContent='space-between'>
@@ -33,17 +40,11 @@ const SecurityContent = () => {
         </Typography>
         <StyledSwitch checked={enable} onChange={handleEnable} />
       </Stack>
-      {enable ? (
-        user?.twoFARequired ? (
-          <Typography variant='h6'>You are verified user.</Typography>
-        ) : (
-          <>
-            <Divider />
-            <VerifyForm secret={secret} qrCode={qrCode} />
-          </>
-        )
-      ) : (
-        <></>
+      {enable && (
+        <>
+          <Divider />
+          <VerifyForm secret={secret} qrCode={qrCode} />
+        </>
       )}
     </Stack>
   )

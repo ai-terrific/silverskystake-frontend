@@ -1,4 +1,4 @@
-import { Button, FormControl, Stack, Typography } from '@mui/material'
+import { Box, Button, FormControl, Stack, Typography } from '@mui/material'
 import { ChangeEvent, Dispatch, SetStateAction, useCallback, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
@@ -10,7 +10,13 @@ import { dispatch, login } from '@/store'
 import { LoginForm } from '@/types'
 import { handleError } from '@/util'
 
-const Login = ({ setOpen }: { setOpen: Dispatch<SetStateAction<boolean>> }) => {
+const Login = ({
+  setOpen,
+  setValue
+}: {
+  setOpen: Dispatch<SetStateAction<boolean>>
+  setValue: Dispatch<SetStateAction<string>>
+}) => {
   const navigate = useNavigate()
   const [formData, setFormData] = useState<LoginForm>({
     email: '',
@@ -95,9 +101,11 @@ const Login = ({ setOpen }: { setOpen: Dispatch<SetStateAction<boolean>> }) => {
               onChange={handleChange}
             />
           </FormControl>
-          <Typography fontWeight={500} color='success' align='center'>
-            Forgot Password
-          </Typography>
+          <Box component='span' onClick={() => setValue('forgotPassword')}>
+            <Typography fontWeight={500} color='success' align='center'>
+              Forgot Password
+            </Typography>
+          </Box>
           <Button variant='contained' onClick={handleSubmit}>
             LOGIN
           </Button>

@@ -1,7 +1,9 @@
 export const API_ENDPOINTS = {
   AUTH: {
     REGISTER: `user/register`,
-    LOGIN: `user/login`
+    LOGIN: `user/login`,
+    SEND_EMAIL: 'user/forgot-password',
+    RESET_PASSWORD: `user/reset-password`
   },
   USER: {
     GET_ACCOUNT: 'user/get-profile',
@@ -17,8 +19,8 @@ export const API_ENDPOINTS = {
     VALIDATE_2FA: 'user/2fa/validation'
   },
   SESSION: {
-    GET: 'session/get',
-    REMOVE: (sessionId: string) => `session/${sessionId}/remove`
+    GET: 'session',
+    REMOVE: (sessionId: string) => `session/${sessionId}`
   },
   OFFER: {
     SUBMIT: 'offer',

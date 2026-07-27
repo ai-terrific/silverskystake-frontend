@@ -46,7 +46,7 @@ const QRCode = styled(Box)(({ theme }) => ({
 const VerifyForm = ({ secret, qrCode }: { secret: string; qrCode: string }) => {
   const { isMobile } = useDeviceType()
   const { user } = useSelector(store => store.auth)
-  const [code, setCode] = useState<string>(user?.secret ?? '')
+  const [code, setCode] = useState<string>('')
 
   const handleVerify = async () => {
     try {
