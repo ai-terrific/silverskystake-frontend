@@ -3,8 +3,9 @@ import apiRequest from '@/services/axios'
 import {
   Email,
   EmailPassword,
+  LoginFormData,
   LoginUserRes,
-  RegisterForm,
+  RegisterFormData,
   RegisterUserRes,
   ResetPasswordType,
   ResponseType,
@@ -15,7 +16,7 @@ import {
   VerifyType
 } from '@/types'
 
-export const registerUser = async (data: RegisterForm): Promise<RegisterUserRes> => {
+export const registerUser = async (data: RegisterFormData): Promise<RegisterUserRes> => {
   return apiRequest({
     method: 'POST',
     url: API_ENDPOINTS.AUTH.REGISTER,
@@ -24,7 +25,7 @@ export const registerUser = async (data: RegisterForm): Promise<RegisterUserRes>
   })
 }
 
-export const loginUser = async (data: EmailPassword): Promise<LoginUserRes> => {
+export const loginUser = async (data: LoginFormData): Promise<LoginUserRes> => {
   return apiRequest({
     method: 'POST',
     url: API_ENDPOINTS.AUTH.LOGIN,
@@ -33,10 +34,18 @@ export const loginUser = async (data: EmailPassword): Promise<LoginUserRes> => {
   })
 }
 
-export const get2FAAuthentication = async (data: TwoFAEnable): Promise<TwoFAGenerationType> => {
+export const set2FAAuthentication = async (data: TwoFAEnable): Promise<TwoFAGenerationType> => {
   return apiRequest({
     method: 'POST',
     data,
+    url: API_ENDPOINTS.USER.SET_2FA,
+    errorMessage: 'Two factor authentication failed'
+  })
+}
+
+export const get2FAAuthentication = async (): Promise<TwoFAGenerationType> => {
+  return apiRequest({
+    method: 'GET',
     url: API_ENDPOINTS.USER.GET_2FA,
     errorMessage: 'Two factor authentication failed'
   })

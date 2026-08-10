@@ -17,7 +17,7 @@ const SecurityContent = () => {
   const handleEnable = async (event: ChangeEvent<HTMLInputElement>) => {
     try {
       setEnable(event.target.checked)
-      const response = await authService.get2FAAuthentication({ enable: event.target.checked })
+      const response = await authService.set2FAAuthentication({ enable: event.target.checked })
       setSecret(response.secret)
       setQRCode(response.qrCode)
     } catch (err) {
@@ -26,7 +26,7 @@ const SecurityContent = () => {
   }
 
   useEffect(() => {
-    authService.get2FAAuthentication({ enable }).then(response => {
+    authService.get2FAAuthentication().then(response => {
       setSecret(response.secret)
       setQRCode(response.qrCode)
     })

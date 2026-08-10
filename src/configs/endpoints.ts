@@ -14,7 +14,8 @@ export const API_ENDPOINTS = {
     IDENTIFICATOIN: 'user/identification',
     ADDRESS: 'user/address',
     FUND: 'user/fund',
-    GET_2FA: 'user/2fa/setup',
+    SET_2FA: 'user/2fa/setup',
+    GET_2FA: 'user/2fa',
     VERIFY_2FA: 'user/2fa/verify',
     VALIDATE_2FA: 'user/2fa/validation'
   },

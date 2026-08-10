@@ -1,5 +1,7 @@
-import { Box, Button, FormControl, Stack, Typography } from '@mui/material'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { Box, Button, FormControl, FormHelperText, Stack, Typography } from '@mui/material'
 import { ChangeEvent, Dispatch, SetStateAction, useCallback, useState } from 'react'
+import { Controller, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 
@@ -7,7 +9,7 @@ import { StyledInput } from '@/components/common.style'
 import { TABS } from '@/constants'
 import { authService } from '@/services'
 import { dispatch, login } from '@/store'
-import { LoginForm } from '@/types'
+import { LoginForm, LoginFormData, loginSchema } from '@/types'
 import { handleError } from '@/util'
 
 const Login = ({
@@ -18,25 +20,31 @@ const Login = ({
   setValue: Dispatch<SetStateAction<string>>
 }) => {
   const navigate = useNavigate()
-  const [formData, setFormData] = useState<LoginForm>({
-    email: '',
-    password: ''
+
+  const {
+    control,
+    handleSubmit,
+    formState: { errors }
+  } = useForm<LoginFormData>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: {
+      emailOrUsername: '',
+      password: '',
+      code: ''
+    }
   })
+
   const [code, setCode] = useState<string>('')
   const [twoFARequired, setTwoFactorRequired] = useState<boolean>(false)
+  const [pendingEmail, setPendingEmail] = useState<string>('')
 
-  const handleChange = useCallback(
-    (e: ChangeEvent<HTMLInputElement>) => {
-      setFormData({ ...formData, [e.target.name]: e.target.value })
-    },
-    [formData]
-  )
-
-  const handleSubmit = useCallback(async () => {
+  const onSubmit = async (data: LoginFormData) => {
     try {
-      const response = await authService.loginUser(formData)
-      if (response.twoFARequired) setTwoFactorRequired(true)
-      else {
+      const response = await authService.loginUser(data)
+      if (response.twoFARequired) {
+        setTwoFactorRequired(true)
+        setPendingEmail(data.emailOrUsername)
+      } else {
         dispatch(login(response))
         setOpen(false)
         navigate(TABS[Number(localStorage.getItem('Current'))].link)
@@ -45,11 +53,11 @@ const Login = ({
     } catch (err) {
       handleError(err)
     }
-  }, [formData])
+  }
 
   const handleSendCode = useCallback(async () => {
     try {
-      const response = await authService.validationBy2FA({ code, email: formData.email })
+      const response = await authService.validationBy2FA({ code, email: pendingEmail })
       dispatch(login(response))
       setOpen(false)
       navigate(TABS[Number(localStorage.getItem('Current'))].link)
@@ -57,7 +65,7 @@ const Login = ({
     } catch (err) {
       handleError(err)
     }
-  }, [formData, code])
+  }, [code, pendingEmail])
 
   return (
     <Stack spacing={3}>
@@ -68,12 +76,19 @@ const Login = ({
       {twoFARequired ? (
         <>
           <FormControl variant='standard' fullWidth>
-            <StyledInput
-              placeholder='Verification Code'
-              id='code'
+            <Controller
               name='code'
-              value={code}
-              onChange={e => setCode(e.target.value)}
+              control={control}
+              render={({ field }) => (
+                <StyledInput
+                  {...field}
+                  placeholder='Verification Code'
+                  id='code'
+                  name='code'
+                  value={code}
+                  onChange={e => setCode(e.target.value)}
+                />
+              )}
             />
           </FormControl>
           <Button variant='contained' onClick={handleSendCode}>
@@ -81,35 +96,38 @@ const Login = ({
           </Button>
         </>
       ) : (
-        <>
-          <FormControl variant='standard' fullWidth>
-            <StyledInput
-              placeholder='Username or email'
-              id='email'
-              name='email'
-              value={formData.email}
-              onChange={handleChange}
-            />
-          </FormControl>
-          <FormControl variant='standard' fullWidth>
-            <StyledInput
-              placeholder='Password'
-              id='password'
-              name='password'
-              type='password'
-              value={formData.password}
-              onChange={handleChange}
-            />
-          </FormControl>
-          <Box component='span' onClick={() => setValue('forgotPassword')}>
-            <Typography fontWeight={500} color='success' align='center'>
-              Forgot Password
-            </Typography>
-          </Box>
-          <Button variant='contained' onClick={handleSubmit}>
-            LOGIN
-          </Button>
-        </>
+        <form onSubmit={handleSubmit(onSubmit)} noValidate>
+          <Stack spacing={3}>
+            <FormControl variant='standard' fullWidth error={!!errors.emailOrUsername}>
+              <Controller
+                name='emailOrUsername'
+                control={control}
+                render={({ field }) => (
+                  <StyledInput {...field} placeholder='Username or email' id='emailOrUsername' name='emailOrUsername' />
+                )}
+              />
+              <FormHelperText>{errors.emailOrUsername?.message}</FormHelperText>
+            </FormControl>
+            <FormControl variant='standard' fullWidth error={!!errors.password}>
+              <Controller
+                name='password'
+                control={control}
+                render={({ field }) => (
+                  <StyledInput {...field} type='password' placeholder='Password' id='password' name='password' />
+                )}
+              />
+              <FormHelperText>{errors.password?.message}</FormHelperText>
+            </FormControl>
+            <Box component='span' onClick={() => setValue('forgotPassword')}>
+              <Typography fontWeight={500} color='success' align='center'>
+                Forgot Password
+              </Typography>
+            </Box>
+            <Button type='submit' variant='contained'>
+              LOGIN
+            </Button>
+          </Stack>
+        </form>
       )}
     </Stack>
   )

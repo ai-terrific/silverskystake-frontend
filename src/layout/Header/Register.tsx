@@ -1,35 +1,36 @@
-import { Button, FormControl, Stack, Typography } from '@mui/material'
-import { ChangeEvent, useCallback, useState } from 'react'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { Button, FormControl, FormHelperText, InputLabel, Stack, Typography } from '@mui/material'
+import { Controller, useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 
 import { StyledInput } from '@/components/common.style'
 import { authService } from '@/services'
-import { RegisterForm } from '@/types'
+import { RegisterFormData, registerSchema } from '@/types'
 import { handleError } from '@/util'
 
 const Register = () => {
-  const [formData, setFormData] = useState<RegisterForm>({
-    email: '',
-    username: '',
-    password: '',
-    confirmPassword: ''
+  const {
+    control,
+    handleSubmit,
+    formState: { errors }
+  } = useForm<RegisterFormData>({
+    resolver: zodResolver(registerSchema),
+    defaultValues: {
+      email: '',
+      username: '',
+      password: '',
+      confirmPassword: ''
+    }
   })
 
-  const handleChange = useCallback(
-    (e: ChangeEvent<HTMLInputElement>) => {
-      setFormData({ ...formData, [e.target.name]: e.target.value })
-    },
-    [formData]
-  )
-
-  const handleSubmit = useCallback(async () => {
+  const onSubmit = async (data: RegisterFormData) => {
     try {
-      const response = await authService.registerUser(formData)
+      const response = await authService.registerUser(data)
       toast.success(response.message, { hideProgressBar: true })
     } catch (err) {
       handleError(err)
     }
-  }, [formData])
+  }
 
   return (
     <Stack spacing={3}>
@@ -37,41 +38,55 @@ const Register = () => {
         <Typography variant='h3'>Register now</Typography>
         <Typography color='secondary'>Register to Silverskystake</Typography>
       </Stack>
-      <FormControl variant='standard' fullWidth>
-        <StyledInput
-          placeholder='Username'
-          id='username'
-          name='username'
-          value={formData.username}
-          onChange={handleChange}
-        />
-      </FormControl>
-      <FormControl variant='standard' fullWidth>
-        <StyledInput placeholder='Email' id='email' name='email' value={formData.email} onChange={handleChange} />
-      </FormControl>
-      <FormControl variant='standard' fullWidth>
-        <StyledInput
-          placeholder='Password'
-          id='password'
-          name='password'
-          type='password'
-          value={formData.password}
-          onChange={handleChange}
-        />
-      </FormControl>
-      <FormControl variant='standard' fullWidth>
-        <StyledInput
-          placeholder='Confirm password'
-          id='confirm-password'
-          name='confirmPassword'
-          type='password'
-          value={formData.confirmPassword}
-          onChange={handleChange}
-        />
-      </FormControl>
-      <Button variant='contained' onClick={handleSubmit}>
-        CONTINUE
-      </Button>
+      <form onSubmit={handleSubmit(onSubmit)} noValidate>
+        <Stack spacing={3}>
+          <FormControl fullWidth error={!!errors.username}>
+            <Controller
+              name='username'
+              control={control}
+              render={({ field }) => <StyledInput {...field} placeholder='Username' id='username' name='username' />}
+            />
+            <FormHelperText>{errors.username?.message}</FormHelperText>
+          </FormControl>
+          <FormControl fullWidth error={!!errors.email}>
+            <Controller
+              name='email'
+              control={control}
+              render={({ field }) => <StyledInput {...field} placeholder='Email' id='email' name='email' />}
+            />
+            <FormHelperText>{errors.email?.message}</FormHelperText>
+          </FormControl>
+          <FormControl fullWidth error={!!errors.password}>
+            <Controller
+              name='password'
+              control={control}
+              render={({ field }) => (
+                <StyledInput {...field} type='password' placeholder='Password' id='password' name='password' />
+              )}
+            />
+            <FormHelperText>{errors.password?.message}</FormHelperText>
+          </FormControl>
+          <FormControl fullWidth error={!!errors.confirmPassword}>
+            <Controller
+              name='confirmPassword'
+              control={control}
+              render={({ field }) => (
+                <StyledInput
+                  {...field}
+                  type='password'
+                  placeholder='Confirm Password'
+                  id='confirmPassword'
+                  name='confirmPassword'
+                />
+              )}
+            />
+            <FormHelperText>{errors.confirmPassword?.message}</FormHelperText>
+          </FormControl>
+          <Button type='submit' variant='contained'>
+            CONTINUE
+          </Button>
+        </Stack>
+      </form>
     </Stack>
   )
 }

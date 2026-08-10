@@ -22,7 +22,6 @@ const ProfileDropDown: FC<DropDownType> = ({ anchorEl, setAnchorEl }: DropDownTy
   const open = Boolean(anchorEl)
 
   const handleClick = (link: string) => {
-    console.log(user)
     if (link == '/') {
       navigate(link)
       dispatch(logout())
@@ -53,10 +52,10 @@ const ProfileDropDown: FC<DropDownType> = ({ anchorEl, setAnchorEl }: DropDownTy
               </StyledIconButton>
               <Stack>
                 <Typography variant='subtitle1' fontWeight={500}>
-                  Irvan_wibowo
+                  {user?.username}
                 </Typography>
                 <Typography variant='caption' color='secondary'>
-                  irvanwibowo@gmail.com
+                  {user?.email}
                 </Typography>
               </Stack>
             </Stack>
