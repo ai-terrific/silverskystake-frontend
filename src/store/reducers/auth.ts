@@ -16,7 +16,7 @@ const authSlice = createSlice({
     login(state, action: PayloadAction<{ user: AuthState['user']; token: string }>) {
       state.isLoggedIn = true
       state.user = action.payload.user
-      state.verified2FA = action.payload.user!.twoFARequired
+      // state.verified2FA = action.payload.user!.twoFARequired
       state.token = action.payload.token
     },
     logout(state) {

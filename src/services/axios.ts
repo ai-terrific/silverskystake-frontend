@@ -4,7 +4,7 @@ import { BASE_URL } from '@/configs'
 import { dispatch, logout, store } from '@/store'
 
 const axiosInstance: AxiosInstance = axios.create({
-  baseURL: `${BASE_URL}/api/`,
+  baseURL: `${BASE_URL}/api/v1/`,
   timeout: 60000, // Timeout in milliseconds
   withCredentials: true
 })
@@ -16,7 +16,6 @@ axiosInstance.interceptors.request.use(
     if (token) {
       // config.headers.Authorization = `Bearer ${token}`
     }
-    config.headers.withCredentials = true // Ensure cookies are sent with requests
     return config
   },
   error => {

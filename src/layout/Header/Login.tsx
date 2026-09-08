@@ -41,15 +41,15 @@ const Login = ({
   const onSubmit = async (data: LoginFormData) => {
     try {
       const response = await authService.loginUser(data)
-      if (response.twoFARequired) {
-        setTwoFactorRequired(true)
-        setPendingEmail(data.emailOrUsername)
-      } else {
-        dispatch(login(response))
-        setOpen(false)
-        navigate(TABS[Number(localStorage.getItem('Current'))].link)
-        toast.success(response.message, { hideProgressBar: true })
-      }
+      // if (response.twoFARequired) {
+      //   setTwoFactorRequired(true)
+      //   setPendingEmail(data.emailOrUsername)
+      // } else {
+      dispatch(login(response))
+      setOpen(false)
+      navigate(TABS[Number(localStorage.getItem('Current'))].link)
+      toast.success(response.message, { hideProgressBar: true })
+      // }
     } catch (err) {
       handleError(err)
     }
@@ -73,7 +73,7 @@ const Login = ({
         <Typography variant='h3'>Welcome back fellas!</Typography>
         <Typography color='secondary'>Login to your Silverskystake account</Typography>
       </Stack>
-      {twoFARequired ? (
+      {/* {twoFARequired ? (
         <>
           <FormControl variant='standard' fullWidth>
             <Controller
@@ -95,40 +95,40 @@ const Login = ({
             LOGIN
           </Button>
         </>
-      ) : (
-        <form onSubmit={handleSubmit(onSubmit)} noValidate>
-          <Stack spacing={3}>
-            <FormControl variant='standard' fullWidth error={!!errors.emailOrUsername}>
-              <Controller
-                name='emailOrUsername'
-                control={control}
-                render={({ field }) => (
-                  <StyledInput {...field} placeholder='Username or email' id='emailOrUsername' name='emailOrUsername' />
-                )}
-              />
-              <FormHelperText>{errors.emailOrUsername?.message}</FormHelperText>
-            </FormControl>
-            <FormControl variant='standard' fullWidth error={!!errors.password}>
-              <Controller
-                name='password'
-                control={control}
-                render={({ field }) => (
-                  <StyledInput {...field} type='password' placeholder='Password' id='password' name='password' />
-                )}
-              />
-              <FormHelperText>{errors.password?.message}</FormHelperText>
-            </FormControl>
-            <Box component='span' onClick={() => setValue('forgotPassword')}>
-              <Typography fontWeight={500} color='success' align='center'>
-                Forgot Password
-              </Typography>
-            </Box>
-            <Button type='submit' variant='contained'>
-              LOGIN
-            </Button>
-          </Stack>
-        </form>
-      )}
+      ) : ( */}
+      <form onSubmit={handleSubmit(onSubmit)} noValidate>
+        <Stack spacing={3}>
+          <FormControl variant='standard' fullWidth error={!!errors.emailOrUsername}>
+            <Controller
+              name='emailOrUsername'
+              control={control}
+              render={({ field }) => (
+                <StyledInput {...field} placeholder='Username or email' id='emailOrUsername' name='emailOrUsername' />
+              )}
+            />
+            <FormHelperText>{errors.emailOrUsername?.message}</FormHelperText>
+          </FormControl>
+          <FormControl variant='standard' fullWidth error={!!errors.password}>
+            <Controller
+              name='password'
+              control={control}
+              render={({ field }) => (
+                <StyledInput {...field} type='password' placeholder='Password' id='password' name='password' />
+              )}
+            />
+            <FormHelperText>{errors.password?.message}</FormHelperText>
+          </FormControl>
+          <Box component='span' onClick={() => setValue('forgotPassword')}>
+            <Typography fontWeight={500} color='success' align='center'>
+              Forgot Password
+            </Typography>
+          </Box>
+          <Button type='submit' variant='contained'>
+            LOGIN
+          </Button>
+        </Stack>
+      </form>
+      {/* )} */}
     </Stack>
   )
 }

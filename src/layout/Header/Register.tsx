@@ -25,7 +25,9 @@ const Register = () => {
 
   const onSubmit = async (data: RegisterFormData) => {
     try {
+      console.log(data)
       const response = await authService.registerUser(data)
+      console.log(response)
       toast.success(response.message, { hideProgressBar: true })
     } catch (err) {
       handleError(err)

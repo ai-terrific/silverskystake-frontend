@@ -12,7 +12,8 @@ import { handleError } from '@/util'
 
 const AccountContent = () => {
   const { mode } = useColorScheme()
-  const { isLoggedIn } = useSelector(store => store.auth)
+  const { isLoggedIn, user } = useSelector(store => store.auth)
+
   const [previewUrl, setPreviewUrl] = useState<string | null>(null)
   const [avatar, setAvatar] = useState<File | null>(null)
   const [formData, setFormData] = useState<Partial<AccountType>>({
@@ -62,6 +63,7 @@ const AccountContent = () => {
 
   const getAccountInfo = useCallback(async () => {
     try {
+      console.log(user)
       const response = await userService.getAccountInformation()
       setFormData(response)
       setPreviewUrl(`${BASE_URL}/uploads/${response.avatar}`)

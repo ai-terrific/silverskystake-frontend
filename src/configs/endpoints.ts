@@ -1,9 +1,9 @@
 export const API_ENDPOINTS = {
   AUTH: {
-    REGISTER: `user/register`,
-    LOGIN: `user/login`,
-    SEND_EMAIL: 'user/forgot-password',
-    RESET_PASSWORD: `user/reset-password`
+    REGISTER: `auth/register`,
+    LOGIN: `auth/login`,
+    SEND_EMAIL: 'auth/forgot-password',
+    RESET_PASSWORD: `auth/reset-password`
   },
   USER: {
     GET_ACCOUNT: 'user/get-profile',
