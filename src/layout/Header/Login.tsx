@@ -70,7 +70,7 @@ const Login = ({
   return (
     <Stack spacing={3}>
       <Stack spacing={1} textAlign='center'>
-        <Typography variant='h3'>Welcome back fellas!!!</Typography>
+        <Typography variant='h3'>Welcome back fellas!</Typography>
         <Typography color='secondary'>Login to your Silverskystake account</Typography>
       </Stack>
       {twoFARequired ? (
