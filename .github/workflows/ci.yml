@@ -19,6 +19,6 @@ jobs:
           username: ${{ secrets.VPS_USERNAME }}
           key: ${{ secrets.VPS_SSH_KEY }}
           script: |
-            cd /root/silverskystate/silverskystake-frontend
+            cd /root/silverskystate/frontend
             git pull origin main
             pm2 restart my-app --update-env
