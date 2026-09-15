@@ -15,7 +15,7 @@ import { toast } from 'react-toastify'
 import { AppIcon } from '@/components/Core'
 import { StyledInput } from '@/components/common.style'
 import { useDeviceType } from '@/hooks'
-import { authService, userService } from '@/services'
+import { authService } from '@/services'
 import { useSelector } from '@/store'
 import { color } from '@/theme'
 import { handleError } from '@/util'
@@ -45,7 +45,6 @@ const QRCode = styled(Box)(({ theme }) => ({
 
 const VerifyForm = ({ secret, qrCode }: { secret: string; qrCode: string }) => {
   const { isMobile } = useDeviceType()
-  const { user } = useSelector(store => store.auth)
   const [code, setCode] = useState<string>('')
 
   const handleVerify = async () => {

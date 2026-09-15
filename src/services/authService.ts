@@ -2,7 +2,6 @@ import { API_ENDPOINTS } from '@/configs'
 import apiRequest from '@/services/axios'
 import {
   Email,
-  EmailPassword,
   LoginFormData,
   LoginUserRes,
   RegisterFormData,

@@ -6,10 +6,7 @@ import {
   IgnoredUser,
   OfferType,
   ResponseType,
-  Session,
-  TwoFAGenerationType,
-  TwoFactorResponseType,
-  VerifyType
+  Session
 } from '@/types'
 
 export const getAccountInformation = async (): Promise<AccountType> => {

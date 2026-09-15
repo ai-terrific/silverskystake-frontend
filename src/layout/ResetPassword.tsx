@@ -1,5 +1,4 @@
 import { Button, FormControl, Stack, Typography } from '@mui/material'
-import { jwtDecode } from 'jwt-decode'
 import { ChangeEvent, useCallback, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'

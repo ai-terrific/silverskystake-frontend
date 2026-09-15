@@ -17,7 +17,8 @@ axiosInstance.interceptors.request.use(
       // config.headers.Authorization = `Bearer ${token}`
     }
     config.headers.withCredentials = true // Ensure cookies are sent with requests
-    return config
+    
+return config
   },
   error => {
     return Promise.reject(error)

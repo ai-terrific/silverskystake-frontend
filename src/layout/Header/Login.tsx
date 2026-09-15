@@ -1,6 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Box, Button, FormControl, FormHelperText, Stack, Typography } from '@mui/material'
-import { ChangeEvent, Dispatch, SetStateAction, useCallback, useState } from 'react'
+import { Dispatch, SetStateAction, useCallback, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
@@ -9,7 +9,7 @@ import { StyledInput } from '@/components/common.style'
 import { TABS } from '@/constants'
 import { authService } from '@/services'
 import { dispatch, login } from '@/store'
-import { LoginForm, LoginFormData, loginSchema } from '@/types'
+import { LoginFormData, loginSchema } from '@/types'
 import { handleError } from '@/util'
 
 const Login = ({

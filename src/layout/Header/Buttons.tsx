@@ -32,8 +32,6 @@ const LoginButton = styled(Button)(({}) => ({
   color: color.white
 }))
 
-type Mode = 'login' | 'register' | 'forgotPassword' | 'sentEmail'
-
 interface AuthDialogProps {
   open: boolean
   setOpen: Dispatch<SetStateAction<boolean>>
