@@ -23,7 +23,7 @@ const DepositButton = styled(Button)(({ theme }) => ({
 }))
 
 const CoinSelect = () => {
-  const [ setSelectedValue] = useState('bitcoin')
+  const [selectedValue, setSelectedValue] = useState('bitcoin')
   const handleChange = (event: SelectChangeEvent<typeof selectedValue>) => {
     setSelectedValue(event.target.value)
   }
