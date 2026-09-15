@@ -21,16 +21,16 @@ import { userService } from '@/services'
 import { handleError } from '@/util'
 
 interface PreviewUrlType {
-  front: string | null
-  back: string | null
+  front: string
+  back: string
 }
 
 const IdentificationContent = () => {
   const [front, setFront] = useState<File | null>(null)
   const [back, setBack] = useState<File | null>(null)
   const [previewUrl, setPreviewUrl] = useState<PreviewUrlType>({
-    front: null,
-    back: null
+    front: '',
+    back: ''
   })
 
   const handleFileChange = useCallback(

@@ -22,8 +22,8 @@ const ProfileDropDown: FC<DropDownType> = ({ anchorEl, setAnchorEl }: DropDownTy
   const open = Boolean(anchorEl)
 
   const handleClick = (link: string) => {
+    navigate(link)
     if (link == '/') {
-      navigate(link)
       dispatch(logout())
     }
     handleClose()

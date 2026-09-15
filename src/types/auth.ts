@@ -24,16 +24,13 @@ export type LoginFormData = z.infer<typeof loginSchema>
 
 export interface AuthState {
   isLoggedIn: boolean
-  verified2FA: boolean
   user: User | null
-  token: string | null
 }
 
 export interface LoginUserRes {
   user: User | null
-  token: string
-  message?: string
   twoFARequired?: boolean
+  message?: string
 }
 
 export interface RegisterUserRes {

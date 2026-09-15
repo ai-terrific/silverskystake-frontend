@@ -3,7 +3,14 @@ export const API_ENDPOINTS = {
     REGISTER: `auth/register`,
     LOGIN: `auth/login`,
     SEND_EMAIL: 'auth/forgot-password',
-    RESET_PASSWORD: `auth/reset-password`
+    RESET_PASSWORD: `auth/reset-password`,
+    SET_2FA: 'auth/set-2fa',
+    GET_2FA: 'auth/get-2fa',
+    VERIFY_2FA: 'auth/verify-2fa',
+    VALIDATE_2FA: 'auth/validate-2fa'
+  },
+  VERIFY: {
+    IDENTIFICATION: 'verify/identification'
   },
   USER: {
     GET_ACCOUNT: 'user/get-profile',
@@ -11,16 +18,11 @@ export const API_ENDPOINTS = {
     VERIFY_ACCOUNT: 'user/verify-profile',
     IGNORED_USERS: 'user/ignore-user',
     REMOVE_IGNORED_USERS: (userId: string) => `user/ignore-user/${userId}/remove`,
-    IDENTIFICATOIN: 'user/identification',
     ADDRESS: 'user/address',
-    FUND: 'user/fund',
-    SET_2FA: 'user/2fa/setup',
-    GET_2FA: 'user/2fa',
-    VERIFY_2FA: 'user/2fa/verify',
-    VALIDATE_2FA: 'user/2fa/validation'
+    FUND: 'user/fund'
   },
   SESSION: {
-    GET: 'session',
+    GET: 'session/get',
     REMOVE: (sessionId: string) => `session/${sessionId}`
   },
   OFFER: {

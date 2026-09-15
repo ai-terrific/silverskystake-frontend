@@ -19,7 +19,7 @@ import { StyledListItem } from '@/components/common.style'
 import { useDeviceType } from '@/hooks'
 import { userService } from '@/services'
 import { color } from '@/theme'
-import { Session } from '@/types'
+import { Session, Sessions } from '@/types'
 import { handleError } from '@/util'
 
 const StatusTextButton = styled(Typography, { shouldForwardProp: prop => prop !== 'status' })<{ status: boolean }>(
@@ -34,28 +34,29 @@ const StatusTextButton = styled(Typography, { shouldForwardProp: prop => prop !=
 const SessionSetting = () => {
   const theme = useTheme()
   const { isMobile } = useDeviceType()
-  const [sessions, setSessions] = useState<Session[]>([])
+  const [sessions, setSessions] = useState<Sessions[]>([])
 
   const getSessions = useCallback(async () => {
     try {
       const response = await userService.getSessionData()
-      setSessions(response)
+      console.log(response)
+      setSessions(response.sessions)
     } catch (err) {
       handleError(err)
     }
   }, [])
 
-  const handleRemoveSession = useCallback(async (_id: string, status: number) => {
-    try {
-      if (!status) {
-        const response = await userService.removeSession(_id)
-        getSessions()
-        toast.success(response.message, { hideProgressBar: true })
-      }
-    } catch (err) {
-      handleError(err)
-    }
-  }, [])
+  // const handleRemoveSession = useCallback(async (_id: string, status: number) => {
+  //   try {
+  //     if (!status) {
+  //       const response = await userService.removeSession(_id)
+  //       getSessions()
+  //       toast.success(response.message, { hideProgressBar: true })
+  //     }
+  //   } catch (err) {
+  //     handleError(err)
+  //   }
+  // }, [])
 
   useEffect(() => {
     getSessions()
@@ -66,34 +67,34 @@ const SessionSetting = () => {
       {isMobile ? (
         <List>
           {sessions.map(item => (
-            <StyledListItem key={item.session.browser}>
+            <StyledListItem key={item.data.browser}>
               <Stack spacing={1} width='100%'>
                 <Stack>
-                  <Typography>{item.session.browser}</Typography>
+                  <Typography>{item.data.browser}</Typography>
                   <Typography variant='body2' color='secondary'>
-                    {item.session.region}, {item.session.city}
+                    {item.data.address}
                   </Typography>
                 </Stack>
                 <Stack direction='row' justifyContent='space-between'>
                   <Typography variant='body2' color='secondary'>
-                    {item.session.ip}
+                    {item.data.ip}
                   </Typography>
-                  <Stack direction='row' spacing={3}>
+                  {/* <Stack direction='row' spacing={3}>
                     <Typography variant='body2' color='secondary'>
-                      {formatDistance(new Date(item.updatedAt), Date.now(), { addSuffix: true })}
+                      {formatDistance(new Date(item.data.updatedAt), Date.now(), { addSuffix: true })}
                     </Typography>
                     <Typography
                       component='li'
                       variant='body2'
-                      color={item.status ? 'error' : 'textDisabled'}
+                      color={item.data.status ? 'error' : 'textDisabled'}
                       sx={{
                         listStyleType: 'disc  '
                       }}
-                      onClick={() => handleRemoveSession(item._id, item.status || 0)}
+                      onClick={() => handleRemoveSession(item.data._id, item.data.status || 0)}
                     >
-                      {item.status ? 'Current' : 'Remove Session'}
+                      {item.data.status ? 'Current' : 'Remove Session'}
                     </Typography>
-                  </Stack>
+                  </Stack> */}
                 </Stack>
               </Stack>
             </StyledListItem>
@@ -113,21 +114,22 @@ const SessionSetting = () => {
             </TableHead>
             <TableBody>
               {sessions.map(item => (
-                <TableRow key={item.session.browser}>
-                  <TableCell>{item.session.browser}</TableCell>
+                <TableRow key={item.data.browser}>
+                  <TableCell>{item.data.browser}</TableCell>
+                  <TableCell sx={{ color: theme.palette.secondary.main }}>{item.data.address}</TableCell>
+                  <TableCell sx={{ color: theme.palette.secondary.main }}>{item.data.ip}</TableCell>
                   <TableCell sx={{ color: theme.palette.secondary.main }}>
-                    {item.session.region}, {item.session.city}
+                    {formatDistance(new Date(item.data.createdAt), Date.now(), { addSuffix: true })}
                   </TableCell>
-                  <TableCell sx={{ color: theme.palette.secondary.main }}>{item.session.ip}</TableCell>
-                  <TableCell sx={{ color: theme.palette.secondary.main }}>
-                    {formatDistance(new Date(item.updatedAt), Date.now(), { addSuffix: true })}
-                  </TableCell>
-                  <TableCell align='right' sx={{ color: !item.status ? color.red : '#0E1525' }}>
+                  {/* <TableCell align='right' sx={{ color: !item.data.status ? color.red : '#0E1525' }}> */}
+                  <TableCell align='right' sx={{ color: color.red }}>
                     <StatusTextButton
-                      status={item.status > 0 || false}
-                      onClick={() => handleRemoveSession(item._id, item.status || 0)}
+                      status={true}
+                      // status={item.data.status > 0 || false}
+                      // onClick={() => handleRemoveSession(item.data._id, item.data.status || 0)}
                     >
-                      {item.status ? 'Current' : 'Remove Session'}
+                      {/* {item.data.status ? 'Current' : 'Remove Session'} */}
+                      Current
                     </StatusTextButton>
                   </TableCell>
                 </TableRow>

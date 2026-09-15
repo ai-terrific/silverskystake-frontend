@@ -74,7 +74,7 @@ const IgnoredUsersSetting = () => {
                   </Typography>
                 </Stack>
                 <Typography variant='body2'>
-                  <TextButton onClick={() => handleRemoveUser(item.user._id)}>Remove</TextButton>
+                  {/* <TextButton onClick={() => handleRemoveUser(item.user._id)}>Remove</TextButton> */}
                 </Typography>
               </Stack>
             </StyledListItem>
@@ -98,7 +98,7 @@ const IgnoredUsersSetting = () => {
                     {formatDistance(new Date(item?.createdAt), Date.now(), { addSuffix: true })}
                   </TableCell>
                   <TableCell align='right'>
-                    <TextButton onClick={() => handleRemoveUser(item.user._id)}>Remove</TextButton>
+                    {/* <TextButton onClick={() => handleRemoveUser(item.user._id)}>Remove</TextButton> */}
                   </TableCell>
                 </TableRow>
               ))}

@@ -52,6 +52,7 @@ const AccountContent = () => {
       if (avatar) data.append('avatar', avatar)
       if (formData.firstName) data.append('firstName', formData.firstName)
       if (formData.lastName) data.append('lastName', formData.lastName)
+      if (formData.email) data.append('email', formData.email)
       if (formData.username) data.append('username', formData.username)
       const response = await userService.updateAccountInformation(data)
       getAccountInfo()
@@ -63,7 +64,6 @@ const AccountContent = () => {
 
   const getAccountInfo = useCallback(async () => {
     try {
-      console.log(user)
       const response = await userService.getAccountInformation()
       setFormData(response)
       setPreviewUrl(`${BASE_URL}/uploads/${response.avatar}`)
@@ -104,7 +104,6 @@ const AccountContent = () => {
             <StyledInput
               placeholder='Type your name here'
               id='first-name'
-              defaultValue='Irvan'
               name='firstName'
               value={formData.firstName}
               onChange={handleChange}
@@ -119,7 +118,6 @@ const AccountContent = () => {
             <StyledInput
               placeholder='Type your name here'
               id='last-name'
-              defaultValue='Wibowo'
               name='lastName'
               value={formData.lastName}
               onChange={handleChange}
@@ -134,7 +132,6 @@ const AccountContent = () => {
             <StyledInput
               placeholder='Type your name here'
               id='username'
-              defaultValue='irvan_wibowo'
               name='username'
               value={formData.username}
               onChange={handleChange}
@@ -149,7 +146,6 @@ const AccountContent = () => {
             <StyledInput
               placeholder='Type your name here'
               id='email'
-              defaultValue='irvanwibowo@gmail.com'
               name='email'
               value={formData.email}
               onChange={handleChange}

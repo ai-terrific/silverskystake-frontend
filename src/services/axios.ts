@@ -10,18 +10,18 @@ const axiosInstance: AxiosInstance = axios.create({
 })
 
 // Add a request interceptor
-axiosInstance.interceptors.request.use(
-  config => {
-    const token = store.getState().auth.token // Example: Retrieving token from localStorage
-    if (token) {
-      // config.headers.Authorization = `Bearer ${token}`
-    }
-    return config
-  },
-  error => {
-    return Promise.reject(error)
-  }
-)
+// axiosInstance.interceptors.request.use(
+//   config => {
+//     const token = store.getState().auth.token // Example: Retrieving token from localStorage
+//     if (token) {
+//       // config.headers.Authorization = `Bearer ${token}`
+//     }
+//     return config
+//   },
+//   error => {
+//     return Promise.reject(error)
+//   }
+// )
 
 // Add a response interceptor
 axiosInstance.interceptors.response.use(

@@ -27,8 +27,11 @@ const SecurityContent = () => {
 
   useEffect(() => {
     authService.get2FAAuthentication().then(response => {
-      setSecret(response.secret)
-      setQRCode(response.qrCode)
+      if (response.twoFAEnabled) {
+        setEnable(true)
+        setSecret(response.secret)
+        setQRCode(response.qrCode)
+      }
     })
   }, [])
 

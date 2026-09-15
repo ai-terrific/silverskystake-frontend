@@ -1,11 +1,14 @@
 import { Box, FormControl, InputLabel, ListItemIcon, ListItemText, MenuItem, Stack, Typography } from '@mui/material'
+import { getCode, getNames } from 'country-list'
+import { useMemo } from 'react'
 
 import { StyledSelect } from '@/components/common.style'
-import { REGION } from '@/constants'
 
 import { PreferenceContent } from './preference.style'
 
 const Preference = () => {
+  const countries = useMemo(() => getNames(), [])
+
   return (
     <PreferenceContent>
       <Typography variant='h6' sx={{ minWidth: 350 }}>
@@ -17,19 +20,19 @@ const Preference = () => {
             Language
           </InputLabel>
           <StyledSelect variant='outlined' fullWidth defaultValue='US'>
-            {REGION.map(item => (
-              <MenuItem value={item.code} key={item.country}>
+            {countries.map(item => (
+              <MenuItem value={item} key={item}>
                 <ListItemIcon>
                   <Box
                     component='img'
                     loading='lazy'
                     width='20'
-                    srcSet={`https://flagcdn.com/w40/${item.code.toLowerCase()}.png 2x`}
-                    src={`https://flagcdn.com/w20/${item.code.toLowerCase()}.png`}
+                    srcSet={`https://flagcdn.com/w40/${getCode(item)?.toLowerCase()}.png 2x`}
+                    src={`https://flagcdn.com/w20/${getCode(item)?.toLowerCase()}.png`}
                     alt=''
                   />
                 </ListItemIcon>
-                <ListItemText>{item.country}</ListItemText>
+                <ListItemText>{item}</ListItemText>
               </MenuItem>
             ))}
           </StyledSelect>

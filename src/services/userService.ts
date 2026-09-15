@@ -38,7 +38,7 @@ export const verifyAccountInformation = async (data: Partial<AccountType>): Prom
   })
 }
 
-export const getSessionData = async (): Promise<Session[]> => {
+export const getSessionData = async (): Promise<Session> => {
   return apiRequest({
     method: 'GET',
     url: API_ENDPOINTS.SESSION.GET,
@@ -92,7 +92,7 @@ export const uploadIdentification = async (data: FormData): Promise<ResponseType
   return apiRequest({
     method: 'POST',
     data,
-    url: API_ENDPOINTS.USER.IDENTIFICATOIN,
+    url: API_ENDPOINTS.VERIFY.IDENTIFICATION,
     errorMessage: 'Upload identification failed'
   })
 }
@@ -100,7 +100,7 @@ export const uploadIdentification = async (data: FormData): Promise<ResponseType
 export const getIdentificationInfo = async (): Promise<IdentificationType> => {
   return apiRequest({
     method: 'GET',
-    url: API_ENDPOINTS.USER.IDENTIFICATOIN,
+    url: API_ENDPOINTS.VERIFY.IDENTIFICATION,
     errorMessage: 'Identification Information failed'
   })
 }

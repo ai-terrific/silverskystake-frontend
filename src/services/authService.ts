@@ -34,11 +34,11 @@ export const loginUser = async (data: LoginFormData): Promise<LoginUserRes> => {
   })
 }
 
-export const set2FAAuthentication = async (data: TwoFAEnable): Promise<TwoFAGenerationType> => {
+export const set2FAAuthentication = async (data?: TwoFAEnable): Promise<TwoFAGenerationType> => {
   return apiRequest({
     method: 'POST',
     data,
-    url: API_ENDPOINTS.USER.SET_2FA,
+    url: API_ENDPOINTS.AUTH.SET_2FA,
     errorMessage: 'Two factor authentication failed'
   })
 }
@@ -46,7 +46,7 @@ export const set2FAAuthentication = async (data: TwoFAEnable): Promise<TwoFAGene
 export const get2FAAuthentication = async (): Promise<TwoFAGenerationType> => {
   return apiRequest({
     method: 'GET',
-    url: API_ENDPOINTS.USER.GET_2FA,
+    url: API_ENDPOINTS.AUTH.GET_2FA,
     errorMessage: 'Two factor authentication failed'
   })
 }
@@ -55,7 +55,7 @@ export const verify2FAAuthentication = async (data: VerifyType): Promise<TwoFact
   return apiRequest({
     method: 'POST',
     data,
-    url: API_ENDPOINTS.USER.VERIFY_2FA,
+    url: API_ENDPOINTS.AUTH.VERIFY_2FA,
     errorMessage: 'Two factor verification failed'
   })
 }
@@ -64,7 +64,7 @@ export const validationBy2FA = async (data: ValidationType): Promise<LoginUserRe
   return apiRequest({
     method: 'POST',
     data,
-    url: API_ENDPOINTS.USER.VALIDATE_2FA,
+    url: API_ENDPOINTS.AUTH.VALIDATE_2FA,
     errorMessage: 'Two factor verification failed'
   })
 }

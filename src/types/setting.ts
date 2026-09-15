@@ -1,20 +1,28 @@
 import { User } from './user'
 
 export interface SessionType {
-  session: {
-    email: string
-    region: string
-    city: string
-    browser: string
-    ip: string
-  }
-  status: number
+  email: string
+  id: number
+  address?: string
+  browser?: string
+  version?: string
+  ip?: string
+  createdAt: number
 }
 
-export interface Session extends SessionType {
-  _id: string
-  updatedAt: Date
-  createdAt: Date
+export interface Sessions {
+  data: SessionType
+  key: string
+}
+;[]
+
+export interface Session {
+  count: number
+  sessions: {
+    data: SessionType
+    key: string
+  }[]
+  status: string
 }
 
 export interface IgnoredUserType {
