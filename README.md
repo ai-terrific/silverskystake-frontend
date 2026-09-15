@@ -1,46 +1,79 @@
-# Getting Started with Create React App
+# SilverSkyStake Frontend
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+The SilverSkyStake frontend is a React and TypeScript web application for account management, verification, offers, and related user settings. It uses Material UI, React Router, Redux Toolkit, and a custom Webpack configuration.
+
+## Requirements
+
+- Node.js 18 or later
+- npm
+- Access to the SilverSkyStake backend API
+
+## Getting Started
+
+Install dependencies from the project directory:
+
+```bash
+npm install
+```
+
+Create a `.env` file when the API is not available at the default address:
+
+```env
+REACT_APP_API_BASE_URL=http://localhost:8001
+```
+
+Start the development server:
+
+```bash
+npm run dev
+```
+
+Open [http://localhost:5000](http://localhost:5000). The development server supports hot reload and client-side route fallback.
 
 ## Available Scripts
 
-In the project directory, you can run:
+| Command                | Description                                               |
+| ---------------------- | --------------------------------------------------------- |
+| `npm run dev`          | Start Webpack in development mode on port `5000`.         |
+| `npm run build`        | Create an optimized production bundle in `build/`.        |
+| `npm run lint`         | Run ESLint against the `src` directory.                   |
+| `npm run lint:error`   | Report ESLint errors only.                                |
+| `npm run lint:fix`     | Fix applicable ESLint issues and remove unused variables. |
+| `npm run format:check` | Check TypeScript formatting with Prettier.                |
+| `npm run format:fix`   | Format TypeScript files with Prettier.                    |
 
-### `npm start`
+To inspect the production bundle, set `ANALYZE_BUNDLE=true` before running the build. In PowerShell:
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+```powershell
+$env:ANALYZE_BUNDLE = 'true'; npm run build
+```
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## Configuration
 
-### `npm test`
+`REACT_APP_API_BASE_URL` controls the backend URL used by the frontend. The value is injected at build time by `dotenv-webpack`; do not commit credentials or other secrets to `.env` files.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+If the variable is not set, the application falls back to `http://172.20.4.112:8001`, as defined in `src/configs/index.ts`.
 
-### `npm run build`
+## Main Routes
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- `/` - Main application layout
+- `/setting/account` - Account information
+- `/setting/security` - Security settings
+- `/setting/preference` - Preferences
+- `/setting/session` - Active sessions
+- `/setting/ignore` - Ignored users
+- `/setting/verify` - Identity verification
+- `/setting/offer` - Offers
+- `/promotion`, `/vip`, `/blog`, `/forum`, `/support` - Content and promotional pages
+- `/:token/reset-password` - Password reset
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Production
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Build the application and serve the generated `build/` directory with a static web server:
 
-### `npm run eject`
+```bash
+npm run build
+npx serve -s build
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+The server must route unknown paths to `index.html` so React Router can handle client-side navigation.
