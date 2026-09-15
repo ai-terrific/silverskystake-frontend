@@ -1,4 +1,5 @@
 const path = require('path')
+const dotenv = require('dotenv')
 const Dotenv = require('dotenv-webpack')
 const { ProvidePlugin } = require('webpack')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
@@ -9,6 +10,8 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const CompressionPlugin = require('compression-webpack-plugin')
 const TerserWebpackPlugin = require('terser-webpack-plugin')
 const CssMinimizerWebpackPlugin = require('css-minimizer-webpack-plugin')
+
+dotenv.config()
 
 module.exports = env => {
   const isProduction = process.env.NODE_ENV === 'production'
@@ -162,6 +165,13 @@ module.exports = env => {
       compress: true,
       port: 5000,
       historyApiFallback: true,
+      proxy: [
+        {
+          context: ['/api'],
+          target: process.env.REACT_APP_API_BASE_URL || 'http://localhost:8001',
+          changeOrigin: true
+        }
+      ],
       hot: true,
       client: {
         overlay: {
