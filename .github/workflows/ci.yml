@@ -23,4 +23,4 @@ jobs:
 
             git pull origin main
 
-            pm2 restart my-app --update-env
+            pm2 restart frontend --update-env
