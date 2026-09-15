@@ -1,9 +1,9 @@
 import { Stack } from '@mui/material'
 import { FC } from 'react'
 
-import Affiliate from '@/assets/svg/Affiliate.svg'
 import US from '@/assets/svg/US.svg'
 import AddUser from '@/assets/svg/add-user.svg'
+import Affiliate from '@/assets/svg/affiliate.svg'
 import Alarm from '@/assets/svg/alarm.svg'
 import Bet from '@/assets/svg/bet.svg'
 import Bitcoin from '@/assets/svg/bitcoin.svg'
