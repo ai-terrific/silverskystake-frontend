@@ -12,7 +12,7 @@ export interface User {
   id: string
   email: string
   username: string
-  twoFARequired: boolean
+  twoFAEnabled: boolean
   createdAt: Date
 }
 

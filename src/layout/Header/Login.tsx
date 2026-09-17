@@ -35,14 +35,14 @@ const Login = ({
   })
 
   const [code, setCode] = useState<string>('')
-  const [twoFARequired, setTwoFactorRequired] = useState<boolean>(false)
+  const [twoFAEnabled, setTwoFactorEnabled] = useState<boolean>(false)
   const [pendingEmail, setPendingEmail] = useState<string>('')
 
   const onSubmit = async (data: LoginFormData) => {
     try {
       const response = await authService.loginUser(data)
-      if (response.twoFARequired) {
-        setTwoFactorRequired(true)
+      if (response.twoFAEnabled) {
+        setTwoFactorEnabled(true)
         setPendingEmail(data.emailOrUsername)
       } else {
         dispatch(login(response))
@@ -73,7 +73,7 @@ const Login = ({
         <Typography variant='h3'>Welcome back fellas!</Typography>
         <Typography color='secondary'>Login to your Silverskystake account</Typography>
       </Stack>
-      {twoFARequired ? (
+      {twoFAEnabled ? (
         <>
           <FormControl variant='standard' fullWidth>
             <Controller

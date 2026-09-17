@@ -10,7 +10,7 @@ import VerifyForm from './VerifyForm'
 
 const SecurityContent = () => {
   const { user } = useSelector(store => store.auth)
-  const [enable, setEnable] = useState<boolean>(user?.twoFARequired!)
+  const [enable, setEnable] = useState<boolean>(user?.twoFAEnabled!)
   const [secret, setSecret] = useState<string>('')
   const [qrCode, setQRCode] = useState<string>('')
 

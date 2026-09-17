@@ -29,7 +29,7 @@ export interface AuthState {
 
 export interface LoginUserRes {
   user: User | null
-  twoFARequired?: boolean
+  twoFAEnabled?: boolean
   message?: string
 }
 
