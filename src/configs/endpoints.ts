@@ -10,7 +10,9 @@ export const API_ENDPOINTS = {
     VALIDATE_2FA: 'auth/validate-2fa'
   },
   VERIFY: {
-    IDENTIFICATION: 'verify/identification'
+    IDENTIFICATION: 'verify/identification',
+    UPLOAD: 'verify/upload',
+    GET: (type: string) => `verify/get/${type}`
   },
   USER: {
     GET_ACCOUNT: 'user/get-profile',
@@ -18,7 +20,6 @@ export const API_ENDPOINTS = {
     VERIFY_ACCOUNT: 'user/verify-profile',
     IGNORED_USERS: 'user/ignore-user',
     REMOVE_IGNORED_USERS: (userId: string) => `user/ignore-user/${userId}/remove`,
-    ADDRESS: 'user/address',
     FUND: 'user/fund'
   },
   SESSION: {

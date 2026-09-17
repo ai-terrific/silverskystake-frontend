@@ -1,4 +1,5 @@
-import { Button, Divider, Grid2, InputLabel, Stack, Typography } from '@mui/material'
+import { InfoOutlined } from '@mui/icons-material'
+import { Alert, AlertTitle, Button, Divider, Grid2, InputLabel, Stack, Typography } from '@mui/material'
 import { ChangeEvent, useCallback, useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 
@@ -6,9 +7,10 @@ import { AppIcon } from '@/components/Core'
 import { UploadImage, VisuallyHiddenInput } from '@/components/common.style'
 import { BASE_URL } from '@/configs'
 import { userService } from '@/services'
+import { VerifyCompleted } from '@/types'
 import { handleError } from '@/util'
 
-const AddressContent = () => {
+const AddressContent = ({ completed, setCompleted }: VerifyCompleted) => {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null)
   const [proofAddress, setProofAddress] = useState<File | null>(null)
 
@@ -29,8 +31,11 @@ const AddressContent = () => {
   const handleSubmit = async () => {
     try {
       const data = new FormData()
-      if (proofAddress) data.append('proofAddress', proofAddress)
-      const response = await userService.uploadProofOfAddress(data)
+      if (proofAddress) {
+        data.append('file', proofAddress)
+        data.append('type', 'proofAddress')
+      }
+      const response = await userService.uploadVerifyImages(data)
       getProofOfAddress()
       toast.success(response.message, { hideProgressBar: true })
     } catch (err) {
@@ -40,8 +45,11 @@ const AddressContent = () => {
 
   const getProofOfAddress = useCallback(async () => {
     try {
-      const response = await userService.getProofOfAddress()
-      setPreviewUrl(`${BASE_URL}/uploads/${response.proofAddress}`)
+      const response = await userService.getVerifyImages('proof-address')
+      if (response.image) {
+        setPreviewUrl(`${BASE_URL}/uploads/${response.image}`)
+        setCompleted(true)
+      }
     } catch (err) {
       handleError(err)
     }
@@ -60,6 +68,14 @@ const AddressContent = () => {
           <Typography color='secondary'>Upload you identification.</Typography>
         </Stack>
         <Grid2 container spacing={4}>
+          {!completed && (
+            <Grid2 size={12}>
+              <Alert severity='warning' icon={<InfoOutlined />}>
+                <AlertTitle>Your verification requires attention</AlertTitle>
+                Upload you identification.
+              </Alert>
+            </Grid2>
+          )}
           <Grid2 size={12} display='flex' flexDirection='column' gap={1}>
             <InputLabel shrink htmlFor='first-name'>
               Upload source of fund

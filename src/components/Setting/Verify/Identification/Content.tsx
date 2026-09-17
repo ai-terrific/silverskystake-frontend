@@ -11,13 +11,14 @@ import {
   Stack,
   Typography
 } from '@mui/material'
-import { ChangeEvent, useCallback, useEffect, useState } from 'react'
+import { ChangeEvent, Dispatch, SetStateAction, useCallback, useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 
 import { AppIcon } from '@/components/Core'
 import { StyledSelect, UploadImage, VisuallyHiddenInput } from '@/components/common.style'
 import { BASE_URL } from '@/configs'
 import { userService } from '@/services'
+import { VerifyCompleted } from '@/types'
 import { handleError } from '@/util'
 
 interface PreviewUrlType {
@@ -25,7 +26,7 @@ interface PreviewUrlType {
   back: string
 }
 
-const IdentificationContent = () => {
+const IdentificationContent = ({ completed, setCompleted }: VerifyCompleted) => {
   const [front, setFront] = useState<File | null>(null)
   const [back, setBack] = useState<File | null>(null)
   const [previewUrl, setPreviewUrl] = useState<PreviewUrlType>({
@@ -57,11 +58,14 @@ const IdentificationContent = () => {
     try {
       const response = await userService.getIdentificationInfo()
 
-      setPreviewUrl({
-        ...previewUrl,
-        front: `${BASE_URL}/uploads/${response.front}`,
-        back: `${BASE_URL}/uploads/${response.back}`
-      })
+      if (response.front && response.back) {
+        setPreviewUrl({
+          ...previewUrl,
+          front: `${BASE_URL}/uploads/${response.front}`,
+          back: `${BASE_URL}/uploads/${response.back}`
+        })
+        setCompleted(true)
+      }
     } catch (err) {
       handleError(err)
     }
@@ -93,12 +97,14 @@ const IdentificationContent = () => {
           <Typography color='secondary'>Upload you identification.</Typography>
         </Stack>
         <Grid2 container spacing={4}>
-          <Grid2 size={12}>
-            <Alert severity='warning' icon={<InfoOutlined />}>
-              <AlertTitle>Your verification requires attention</AlertTitle>
-              Upload you identification.
-            </Alert>
-          </Grid2>
+          {!completed && (
+            <Grid2 size={12}>
+              <Alert severity='warning' icon={<InfoOutlined />}>
+                <AlertTitle>Your verification requires attention</AlertTitle>
+                Upload you identification.
+              </Alert>
+            </Grid2>
+          )}
           <Grid2 size={12}>
             <FormControl variant='standard' fullWidth>
               <InputLabel shrink htmlFor='last-name'>

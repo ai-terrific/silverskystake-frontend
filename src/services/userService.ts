@@ -9,6 +9,7 @@ import {
   Session,
   TwoFAGenerationType,
   TwoFactorResponseType,
+  VerifyInformationType,
   VerifyType
 } from '@/types'
 
@@ -105,36 +106,19 @@ export const getIdentificationInfo = async (): Promise<IdentificationType> => {
   })
 }
 
-export const uploadProofOfAddress = async (data: FormData): Promise<ResponseType> => {
+export const uploadVerifyImages = async (data: FormData): Promise<ResponseType> => {
   return apiRequest({
     method: 'POST',
     data,
-    url: API_ENDPOINTS.USER.ADDRESS,
+    url: API_ENDPOINTS.VERIFY.UPLOAD,
     errorMessage: 'Upload proof of address failed'
   })
 }
 
-export const getProofOfAddress = async (): Promise<Partial<AccountType>> => {
+export const getVerifyImages = async (type: string): Promise<VerifyInformationType> => {
   return apiRequest({
     method: 'GET',
-    url: API_ENDPOINTS.USER.ADDRESS,
+    url: API_ENDPOINTS.VERIFY.GET(type),
     errorMessage: 'Get address failed'
-  })
-}
-
-export const uploadSourceOfFund = async (data: FormData): Promise<ResponseType> => {
-  return apiRequest({
-    method: 'POST',
-    data,
-    url: API_ENDPOINTS.USER.FUND,
-    errorMessage: 'Upload source of fund failed'
-  })
-}
-
-export const getSourceOfFund = async (): Promise<Partial<AccountType>> => {
-  return apiRequest({
-    method: 'GET',
-    url: API_ENDPOINTS.USER.FUND,
-    errorMessage: 'Get source of fund failed'
   })
 }

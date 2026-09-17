@@ -93,3 +93,7 @@ export interface TwoFactorResponseType {
   isValid: boolean
   message: string
 }
+
+export interface VerifyInformationType {
+  image: string
+}

@@ -8,12 +8,11 @@ import { useDeviceType } from '@/hooks'
 interface VerifyItemProps {
   level: number
   completed?: boolean
-  actionNeeded?: boolean
   description: string
   content: ReactElement
 }
 
-const VerifyItem = ({ level, completed, actionNeeded, description, content }: VerifyItemProps) => {
+const VerifyItem = ({ level, completed, description, content }: VerifyItemProps) => {
   const { isMobile } = useDeviceType()
 
   return (
@@ -21,8 +20,11 @@ const VerifyItem = ({ level, completed, actionNeeded, description, content }: Ve
       {!isMobile && (
         <Stack direction='row' spacing={1.5} justifyContent='flex-start' sx={{ minWidth: { xs: 0, md: 350 } }}>
           <Typography variant='h6'>Level {level}</Typography>
-          {completed && <Chip color='success' label='Completed' variant='outlined' />}
-          {actionNeeded && <Chip color='warning' label='Action needed' variant='outlined' />}
+          {completed ? (
+            <Chip color='success' label='Completed' variant='outlined' />
+          ) : (
+            <Chip color='warning' label='Action needed' variant='outlined' />
+          )}
         </Stack>
       )}
       <Box flex={1}>
@@ -32,8 +34,11 @@ const VerifyItem = ({ level, completed, actionNeeded, description, content }: Ve
               <Stack spacing={0.5}>
                 <Stack direction='row' spacing={1.5} justifyContent='flex-start' sx={{ minWidth: { xs: 0, md: 350 } }}>
                   <Typography variant='h6'>Level {level}</Typography>
-                  {completed && <Chip color='success' label='Completed' variant='outlined' />}
-                  {actionNeeded && <Chip color='warning' label='Action needed' variant='outlined' />}
+                  {completed ? (
+                    <Chip color='success' label='Completed' variant='outlined' />
+                  ) : (
+                    <Chip color='warning' label='Action needed' variant='outlined' />
+                  )}
                 </Stack>
                 <Typography variant='subtitle1' color='secondary'>
                   {description}
